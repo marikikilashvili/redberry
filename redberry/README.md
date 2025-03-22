@@ -34,3 +34,39 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+# Exit root
+exit
+
+# Verify user
+whoami  # marikikilashvili
+pwd     # /home/marikikilashvili
+
+# Move project
+sudo mv /root/redberry ~/redberry
+sudo chown -R $(whoami):$(whoami) ~/redberry
+
+# Navigate
+cd ~/redberry
+
+# Verify files
+ls  # README.md  src/  package.json  etc.
+
+# Pull and merge
+git pull origin main --no-rebase
+# Resolve conflicts if any, then:
+# git add .
+# git commit
+
+# Push
+git push origin main
+
+# Install and run
+npm install
+npm run dev
+
+
+
+eabfa
