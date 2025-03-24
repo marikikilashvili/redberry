@@ -1,0 +1,18 @@
+@import "../../color.scss";
+.container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $primaryColor;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  width: 70px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+
+  &:hover {
+    color: $secondaryColor; // Secondary color or whatever you want
+  }
+}

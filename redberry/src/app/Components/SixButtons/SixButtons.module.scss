@@ -1,0 +1,49 @@
+@import "../../color.scss";
+.button {
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+  border-radius: 5px;
+  gap: 4px;
+  border: 0.5px solid black;
+  font-family: "FiraGO", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.big {
+  width: 106px;
+  height: 32px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0%;
+}
+
+.small {
+  width: 86px;
+  height: 26px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 150%;
+}
+
+.red {
+  border-color: red;
+  color: $red;
+}
+
+.yellow {
+  border-color: $yellow;
+  color: yellow;
+}
+
+.green {
+  border-color: $green;
+  color: $green;
+}
