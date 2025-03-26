@@ -1,0 +1,17 @@
+@import "../../color.scss";
+.container {
+  width: 550px;
+  height: 48px;
+  gap: 8px;
+  padding: 12px 15px;
+  display: flex;
+  background-color: $white;
+  border: none;
+  align-items: center;
+  cursor: pointer;
+  color: $primaryColor;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}

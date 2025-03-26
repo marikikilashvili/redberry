@@ -1,0 +1,19 @@
+@import "../../color.scss";
+.container {
+  width: 550px;
+  height: 46px;
+  gap: 6px;
+  padding: 12px 14px;
+  display: flex;
+  background-color: $white;
+  border: none;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.img {
+  border-radius: 90px;
+}

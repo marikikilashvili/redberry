@@ -1,0 +1,22 @@
+@import "../../color.scss";
+.button {
+  width: 381px;
+  height: 54px;
+  border-radius: 10px;
+  gap: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.container {
+  width: 381px;
+  height: 217px;
+  border-radius: 15px;
+  border-width: 1px;
+  gap: 28px;
+  padding: 20px;
+  background-color: $white;
+}
