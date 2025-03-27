@@ -1,5 +1,5 @@
 @import "../../color.scss";
-.container {
+.button {
   width: 155px;
   height: 35px;
 
@@ -14,7 +14,7 @@
   font-size: 16px;
   line-height: 100%;
   letter-spacing: 0%;
-
+  text-align: center;
   background: rgba(131, 56, 236, 1);
   color: #fff;
   border: none;

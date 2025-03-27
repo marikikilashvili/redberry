@@ -1,0 +1,58 @@
+@import "../../color.scss";
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  width: 688px;
+  height: 274px;
+  gap: 22px;
+  padding-top: 40px;
+  padding-left: 30px;
+border-radius: 10px;
+border:0.5px solid $primaryColor;
+position: relative;
+}
+.p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.button{
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+}
+
+
+
+.container {
+  display: flex;
+  gap: 10px;
+}
+
+.component {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.component > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.iconWrapper {
+  cursor: pointer;
+}

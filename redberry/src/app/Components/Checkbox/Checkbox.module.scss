@@ -1,0 +1,52 @@
+@import "../../color.scss";
+.container {
+  display: flex;
+  background-color: $white;
+  max-width: 263px;
+  height: 22px;
+  gap: 15px;
+  align-items: center;
+}
+
+.checkboxWrapper {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkboxInput {
+  display: none;
+}
+
+.checkboxCustom {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid #000;
+  background-color: #fff;
+  position: relative;
+  transition: all 0.2s ease;
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 12px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    top: 2px;
+    left: 8px;
+    opacity: 0;
+  }
+}
+
+.checkboxInput:checked + .checkboxCustom {
+  &:after {
+    opacity: 1;
+  }
+}
+.p {
+  line-height: 100%;
+  letter-spacing: 0%;
+}
