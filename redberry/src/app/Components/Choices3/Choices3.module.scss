@@ -11,7 +11,7 @@
   padding: 12.5px 18px;
   justify-content: space-between;
   padding-right: 0px;
-  position: relative; // Make this the positioning context for Chamoshla
+  position: relative; 
 }
 
 .component {
@@ -42,11 +42,16 @@
 
 .iconWrapper {
   cursor: pointer;
+  align-items: center;
+  text-align: center;
 }
 
 .chamoshlaWrapper {
   position: absolute;
-  top: 44px; // Place below the container (44px is the height of .container)
-  right: 0; // Align to the right side of the container (688px wide)
-  z-index: 10; // Ensure it appears above other elements
+  top: 44px; 
+  right: 0; 
+  z-index: 10;
+}
+.image{
+  padding-top: 5px;
 }

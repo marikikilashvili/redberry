@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from "./Choices3.module.scss";
 import Image from "next/image";
 import Chamoshla from "../Chamoshla/Chamoshla";
+import Tanamshromeli from "../Tanamshromeli/Tanamshromeli";
 
 const Choices3 = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -21,9 +22,14 @@ const Choices3 = () => {
           "IT დეპარტამენტი",
         ];
       case "პრიორიტეტი":
-        return ["მაღალი", "საშუალო", "დაბალი", "კრიტიკული"];
+        return ["მაღალი", "საშუალო", "დაბალი"];
       case "თანამშრომელი":
-        return ["თანამშრომელი 1", "თანამშრომელი 2", "თანამშრომელი 3", "თანამშრომელი 4"];
+        return [
+          <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />,
+          <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />,
+          <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />,
+          <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />,
+        ];
       default:
         return [];
     }
@@ -34,8 +40,17 @@ const Choices3 = () => {
       <div className={styles.component}>
         <div className={styles.dropdown}>
           <p className={styles.p}>დეპარტამენტი</p>
-          <div onClick={() => toggleDropdown("დეპარტამენტი")} className={styles.iconWrapper}>
-            <Image src="/down.svg" width={24} height={24} alt="image" />
+          <div
+            onClick={() => toggleDropdown("დეპარტამენტი")}
+            className={styles.iconWrapper}
+          >
+            <Image
+              className={styles.image}
+              src="/down.svg"
+              width={24}
+              height={24}
+              alt="image"
+            />
           </div>
         </div>
         {openDropdown === "დეპარტამენტი" && (
@@ -47,8 +62,17 @@ const Choices3 = () => {
       <div className={styles.component}>
         <div className={styles.dropdown}>
           <p className={styles.p}>პრიორიტეტი</p>
-          <div onClick={() => toggleDropdown("პრიორიტეტი")} className={styles.iconWrapper}>
-            <Image src="/down.svg" width={24} height={24} alt="image" />
+          <div
+            onClick={() => toggleDropdown("პრიორიტეტი")}
+            className={styles.iconWrapper}
+          >
+            <Image
+              className={styles.image}
+              src="/down.svg"
+              width={24}
+              height={24}
+              alt="image"
+            />
           </div>
         </div>
         {openDropdown === "პრიორიტეტი" && (
@@ -60,8 +84,17 @@ const Choices3 = () => {
       <div className={styles.component}>
         <div className={styles.dropdown}>
           <p className={styles.p}>თანამშრომელი</p>
-          <div onClick={() => toggleDropdown("თანამშრომელი")} className={styles.iconWrapper}>
-            <Image src="/down.svg" width={24} height={24} alt="image" />
+          <div
+            onClick={() => toggleDropdown("თანამშრომელი")}
+            className={styles.iconWrapper}
+          >
+            <Image
+              className={styles.image}
+              src="/down.svg"
+              width={24}
+              height={24}
+              alt="image"
+            />
           </div>
         </div>
         {openDropdown === "თანამშრომელი" && (

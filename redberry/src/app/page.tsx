@@ -11,17 +11,19 @@ import Tanamshromeli from "./Components/Tanamshromeli/Tanamshromeli";
 import Comment from "./Components/Comment/Comment";
 import Cards from "./Components/Cards/Cards";
 import Header from "./Components/Header/Header";
-import Chamoshla from "./Components/Chamoshla/Chamoshla";
+// import Chamoshla from "./Components/Chamoshla/Chamoshla";
 import Checkbox from "./Components/Checkbox/Checkbox";
 import WomanCheckbox from "./Components/WomanCheckbox/WomanCheckbox";
 import Choices3 from "./Components/Choices3/Choices3";
 import styles from "./page.module.css";
-
+import Pasuxismgebeli from "./Components/Pasuxismgebeli/Pasuxismgebeli";
 export default function Home() {
   const [isChecked, setIsChecked] = useState(false);
   return (
     <div className={styles.container}>
       <Header />
+      <Pasuxismgebeli />
+
       <Choices3 />
 
 
