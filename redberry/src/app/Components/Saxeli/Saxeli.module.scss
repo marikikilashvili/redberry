@@ -14,7 +14,7 @@
 }
 
 .card {
-  width: 550px;
+  width: 384px;
   height: 45px;
   padding: 15.5px 14px;
   background-color: $white;
@@ -57,24 +57,38 @@
 }
 
 .label {
-  width: 550px;
-  max-height: 278px;
+  width: 384px;
+
   display: block;
+  background-color: $white;
+  border: none;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 10px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.label {
+  padding-left: 10px;
+}
+.optionItem {
+  height: 45px;
+  align-items: center;
+  padding: 8px 0px;
   font-weight: 300;
   font-size: 14px;
   line-height: 100%;
   letter-spacing: 0%;
   color: #343a40;
-  background-color: $white;
-  border-top: none;
-  border-radius: 0 0 5px 5px;
-  overflow-y: auto;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f8f9fa;
   }
-  padding: 10px 0;
-}
-.label {
-  padding-left: 14px;
 }

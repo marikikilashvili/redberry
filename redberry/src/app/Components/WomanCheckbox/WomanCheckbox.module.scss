@@ -4,7 +4,7 @@
   background-color: $white;
   max-width: 301px;
   height: 28px;
-//   gap: 15px;
+  //   gap: 15px;
   align-items: center;
 }
 
@@ -50,9 +50,9 @@
   line-height: 100%;
   letter-spacing: 0%;
 }
-.img{
-    margin-right: 10px;
-    margin-left: 15px;
-
-border-radius: 90px;
+.img {
+  margin-right: 10px;
+  margin-left: 15px;
+  object-fit: cover;
+  border-radius: 90px;
 }

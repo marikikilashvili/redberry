@@ -4,13 +4,14 @@
   flex-direction: column;
   background-color: $white;
   width: 688px;
-  height: 274px;
+  // height: 274px;
   gap: 22px;
   padding-top: 40px;
   padding-left: 30px;
-border-radius: 10px;
-border:0.5px solid $primaryColor;
-position: relative;
+  border-radius: 10px;
+  border: 0.5px solid $primaryColor;
+  position: relative;
+  padding-bottom: 80px;
 }
 .p {
   font-weight: 400;
@@ -18,15 +19,11 @@ position: relative;
   line-height: 100%;
   letter-spacing: 0%;
 }
-.button{
-    position: absolute;
-    bottom: 20px;
-    right: 30px;
+.button {
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
 }
-
-
-
-
 
 .component {
   display: flex;

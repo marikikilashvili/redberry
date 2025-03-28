@@ -1,10 +1,18 @@
-import styles from "./Pasuxismgebeli.module.scss";
+import styles from "./Saxeli.module.scss";
 import Image from "next/image";
 import { useState, MouseEvent } from "react";
-import Tanamshromeli from "../Tanamshromeli/Tanamshromeli";
-import Daamate from "../Daamate/Daamate";
+
 export default function InputWithImage() {
   const [isLabelVisible, setIsLabelVisible] = useState(false);
+
+  const options = [
+    "დიზაინის დეპარტამენტი",
+    "ლოჯისტიკის დეპარტამენტი",
+    "მარკეტინგის დეპარტამენტი",
+    "აღრიცხვა-ფინანსები",
+    "IT განყოფილება",
+    "გაყიდვების დეპარტამენტი",
+  ];
 
   const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
     e.preventDefault();
@@ -14,7 +22,7 @@ export default function InputWithImage() {
   return (
     <div className={styles.container}>
       <div className={styles.container1}>
-        <h2 className={styles.title}>პასუხისმგებელი თანამშრომელი</h2>
+        <h2 className={styles.title}>სახელი*</h2>
         <div className={styles.dropdownWrapper}>
           <div className={styles.inputWrapper}>
             <input
@@ -37,12 +45,11 @@ export default function InputWithImage() {
           </div>
           {isLabelVisible && (
             <label className={styles.label}>
-              <Daamate text="დაამატე თანამშრომელი" />
-              <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />
-              <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />
-              <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />
-              <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />
-              <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />
+              {options.map((option, index) => (
+                <div key={index} className={styles.optionItem}>
+                  {option}
+                </div>
+              ))}
             </label>
           )}
         </div>

@@ -1,0 +1,97 @@
+@import "../../color.scss";
+
+.container {
+  width: 259px;
+  height: 45px;
+  z-index: 2223;
+}
+
+.container1 {
+  position: relative;
+}
+
+.title {
+  padding-bottom: 8px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #343a40;
+}
+
+.dropdownWrapper {
+  display: inline-block;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  background-color: $white;
+}
+
+.selectedOption {
+  width: 259px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 10px 14px;
+  background-color: $white;
+  border: none;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.selectedText {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #343a40;
+}
+
+.iconWrapper {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.downIcon {
+  transition: transform 0.3s ease;
+  &.active {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown {
+  width: 259px;
+  display: block;
+  background-color: $white;
+  border: none;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 10px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.optionItem {
+  height: 45px;
+  align-items: center;
+  padding: 8px 14px;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #343a40;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+}

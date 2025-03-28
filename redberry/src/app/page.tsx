@@ -17,15 +17,20 @@ import WomanCheckbox from "./Components/WomanCheckbox/WomanCheckbox";
 import Choices3 from "./Components/Choices3/Choices3";
 import styles from "./page.module.css";
 import Pasuxismgebeli from "./Components/Pasuxismgebeli/Pasuxismgebeli";
+import Department from "./Components/Department/Department";
+import Saxeli from "./Components/Saxeli/Saxeli";
+import Statusi from "./Components/Statusi/Statusi";
 export default function Home() {
   const [isChecked, setIsChecked] = useState(false);
   return (
     <div className={styles.container}>
       <Header />
+      <Statusi />
       <Pasuxismgebeli />
 
+      <Saxeli />
       <Choices3 />
-
+      <Department />
 
       <CustomButton text="Button" />
       <ColouredButton color="pink" />
