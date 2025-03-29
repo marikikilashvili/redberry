@@ -1,5 +1,59 @@
 .container {
+  max-width: 1680px;
+  margin: auto;
+}
+
+.cardsContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Four equal columns */
+  gap: 52px; /* Your original gap */
+}
+
+.column {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
+  flex-direction: column; /* Stack cards vertically */
+  gap: 10px; /* Space between cards in a column */
+}
+
+.statusButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.yellow {
+  background-color: #FFF5D9; /* Light yellow */
+  color: #E89C31; /* Darker yellow text */
+}
+
+.orange {
+  background-color: #FFE8D9; 
+  color: #FD7A07;
+}
+
+.pink {
+  background-color: #FFEDF7; 
+  color: #E62E7B; 
+}
+
+.blue {
+  background-color: #E7F1FE; 
+  color: #0066FF; 
+}
+
+.h1 {
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  padding-top: 40px;
+  padding-bottom: 52px;
+}
+
+.Choices3 {
+  padding-bottom: 79px;
 }

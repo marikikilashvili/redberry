@@ -1,0 +1,49 @@
+      <Statusi />
+      <Pasuxismgebeli />
+
+     <Saxeli />
+      
+      <Department />
+
+      <CustomButton text="Button" />
+      <ColouredButton color="pink" />
+      <ColouredButton color="orange" />
+      <ColouredButton color="blue" />
+      <ColouredButton color="yellow" />
+      <CreateAccount text="შექმენი ახალი დავალება" />
+      <CreateTanamsh text="თანამშრომლის შექმნა" />
+      <SixButtons priority="high" size="small" />
+      <SixButtons priority="medium" size="small" />
+      <SixButtons priority="low" size="small" />
+      <SixButtons priority="medium" size="big" />
+      <SixButtons priority="low" size="big" />
+      <SixButtons priority="high" size="big" />
+      <Left text="უპასუხე" />
+      <Daamate text="დაამატე თანამშრომელი" />
+      <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />
+      <Comment
+        text="დიზაინი სუფთად ჩანს, მაგრამ კოდირებისას მნიშვნელოვანი იქნება, რომ ელემენტებს ჰქონდეს შესაბამისი რეზოლუცია."
+        imageSrc="/qali2.jpg"
+        name="ემილია მორგანი"
+        showLeft={true}
+      />
+      <Comment
+        name="ემილია მორგანი"
+        imageSrc="/qali.jpg"
+        text="დიზაინი სუფთად ჩანს, მაგრამ კოდირებისას მნიშვნელოვანი იქნება."
+      />
+
+      <Cards
+        text="მზად ტესტირებისთვის"
+        date="22 იანვ, 2022"
+        title="Redberry-ს საიტის ლენდინგის დიზაინი"
+        description="შექმენი საიტის მთავარი გვერდი, რომელიც მოიცავს მთავარ სექციებს, ნავიგაციას."
+        imgSrc="/qali.jpg"
+        comments={8}
+      />
+      <WomanCheckbox />
+      <Checkbox
+        checked={isChecked}
+        onChange={setIsChecked}
+        label="Sample Checkbox"
+      /> 

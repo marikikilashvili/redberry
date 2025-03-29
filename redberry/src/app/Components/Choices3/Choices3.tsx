@@ -5,7 +5,17 @@ import Image from "next/image";
 import Chamoshla from "../Chamoshla/Chamoshla";
 import Tanamshromeli from "../Tanamshromeli/Tanamshromeli";
 
-const Choices3 = () => {
+type Department = { name: string };
+type Priority = { name: string };
+type Status = { name: string };
+
+type Props = {
+  departments: Department[];
+  priorities: Priority[];
+  statuses: Status[];
+};
+
+const Choices3 = ({ departments, priorities, statuses }: Props) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const toggleDropdown = (dropdown: string) => {
@@ -15,21 +25,22 @@ const Choices3 = () => {
   const getCheckboxTexts = (dropdown: string) => {
     switch (dropdown) {
       case "დეპარტამენტი":
-        return [
-          "დიზაინის დეპარტამენტი",
-          "ფრონტენდ დეპარტამენტი",
-          "ბექენდ დეპარტამენტი",
-          "IT დეპარტამენტი",
-        ];
+        return departments.map((dept) => dept.name);
       case "პრიორიტეტი":
-        return ["მაღალი", "საშუალო", "დაბალი"];
-      case "თანამშრომელი":
-        return [
-          <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />,
-          <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />,
-          <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />,
-          <Tanamshromeli text="თამარ კვანტალია" imageSrc="/qali.jpg" />,
-        ];
+        return priorities.map((priority) => {
+          switch (priority.name.toLowerCase()) {
+            case "high":
+              return "მაღალი";
+            case "medium":
+              return "საშუალო";
+            case "low":
+              return "დაბალი";
+            default:
+              return priority.name;
+          }
+        });
+      case "სტატუსი": 
+        return statuses.map((status) => status.name);
       default:
         return [];
     }
@@ -83,9 +94,9 @@ const Choices3 = () => {
       </div>
       <div className={styles.component}>
         <div className={styles.dropdown}>
-          <p className={styles.p}>თანამშრომელი</p>
+          <p className={styles.p}>სტატუსი</p> 
           <div
-            onClick={() => toggleDropdown("თანამშრომელი")}
+            onClick={() => toggleDropdown("სტატუსი")}
             className={styles.iconWrapper}
           >
             <Image
@@ -97,9 +108,9 @@ const Choices3 = () => {
             />
           </div>
         </div>
-        {openDropdown === "თანამშრომელი" && (
+        {openDropdown === "სტატუსი" && (
           <div className={styles.chamoshlaWrapper}>
-            <Chamoshla checkboxTexts={getCheckboxTexts("თანამშრომელი")} />
+            <Chamoshla checkboxTexts={getCheckboxTexts("სტატუსი")} />
           </div>
         )}
       </div>

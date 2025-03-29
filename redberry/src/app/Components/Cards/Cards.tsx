@@ -29,12 +29,8 @@ function Cards({ text, date, title, description, imgSrc, comments }: Props) {
   };
 
   return (
-    <>
-      <div>
-        <button className={`${styles.button} ${getColorClass()}`}>
-          {text}
-        </button>
-      </div>
+    <div className={styles.gap}>
+      {/* Removed the button from here */}
       <div className={`${styles.container} ${getColorClass()}`}>
         <div className={styles.space2}>
           <div className={styles.space}>
@@ -74,7 +70,7 @@ function Cards({ text, date, title, description, imgSrc, comments }: Props) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
