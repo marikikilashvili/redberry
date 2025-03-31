@@ -1,47 +1,38 @@
 "use client";
 import { useState, useEffect } from "react";
-import CustomButton from "./Components/CustomButton/CustomButton";
-import ColouredButton from "./Components/ColouredButton/ColouredButton";
-import CreateAccount from "./Components/CreateAccount/CreateAccount";
-import CreateTanamsh from "./Components/CreateTanamsh/CreateTanamsh";
-import SixButtons from "./Components/SixButtons/SixButtons";
-import Left from "./Components/Left/Left";
-import Daamate from "./Components/Daamate/Daamate";
-import Tanamshromeli from "./Components/Tanamshromeli/Tanamshromeli";
-import Comment from "./Components/Comment/Comment";
-import Cards from "./Components/Cards/Cards";
-import Header from "./Components/Header/Header";
-import Chamoshla from "./Components/Chamoshla/Chamoshla";
-import Checkbox from "./Components/Checkbox/Checkbox";
-import WomanCheckbox from "./Components/WomanCheckbox/WomanCheckbox";
 import Choices3 from "./Components/Choices3/Choices3";
+import Cards from "./Components/Cards/Cards";
+import Filter from "./Components/Filter/Filter";
 import styles from "./page.module.css";
 import cardStyles from "./Components/Cards/Cards.module.scss";
-import Pasuxismgebeli from "./Components/Pasuxismgebeli/Pasuxismgebeli";
-import Department from "./Components/Department/Department";
-import Saxeli from "./Components/Saxeli/Saxeli";
-import Statusi from "./Components/Statusi/Statusi";
 
 export default function Home() {
-  const [isChecked, setIsChecked] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [priorities, setPriorities] = useState([]);
   const [statuses, setStatuses] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [filters, setFilters] = useState({
+    departments: [],
+    priorities: [],
+    employees: [],
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const taskResponse = await fetch("https://momentum.redberryinternship.ge/api/tasks", {
-          headers: { Authorization: `Bearer 9e8cef4c-74bc-47ef-97e3-2730de04c388` },
+          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
         });
-        if (!taskResponse.ok) throw new Error("Fetch tasks failed");
+        if (!taskResponse.ok) throw new Error(`Fetch tasks failed: ${taskResponse.status}`);
         const taskResult = await taskResponse.json();
         console.log("Fetched Tasks:", taskResult);
         setTasks(taskResult || []);
+        setFilteredTasks(taskResult || []); // Initially show all tasks
 
         const deptResponse = await fetch("https://momentum.redberryinternship.ge/api/departments", {
-          headers: { Authorization: `Bearer 9e8cef4c-74bc-47ef-97e3-2730de04c388` },
+          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
         });
         if (!deptResponse.ok) throw new Error("Fetch departments failed");
         const deptResult = await deptResponse.json();
@@ -49,7 +40,7 @@ export default function Home() {
         setDepartments(deptResult || []);
 
         const priorityResponse = await fetch("https://momentum.redberryinternship.ge/api/priorities", {
-          headers: { Authorization: `Bearer 9e8cef4c-74bc-47ef-97e3-2730de04c388` },
+          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
         });
         if (!priorityResponse.ok) throw new Error("Fetch priorities failed");
         const priorityResult = await priorityResponse.json();
@@ -57,23 +48,49 @@ export default function Home() {
         setPriorities(priorityResult || []);
 
         const statusResponse = await fetch("https://momentum.redberryinternship.ge/api/statuses", {
-          headers: { Authorization: `Bearer 9e8cef4c-74bc-47ef-97e3-2730de04c388` },
+          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
         });
         if (!statusResponse.ok) throw new Error("Fetch statuses failed");
         const statusResult = await statusResponse.json();
         console.log("Fetched Statuses:", statusResult);
         setStatuses(statusResult || []);
+
+        const employeeResponse = await fetch("https://momentum.redberryinternship.ge/api/employees", {
+          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
+        });
+        if (!employeeResponse.ok) throw new Error("Fetch employees failed");
+        const employeeResult = await employeeResponse.json();
+        console.log("Fetched Employees:", employeeResult);
+        setEmployees(employeeResult || []);
       } catch (error) {
         console.error("Error fetching data:", error);
         setTasks([]);
+        setFilteredTasks([]);
         setDepartments([]);
         setPriorities([]);
         setStatuses([]);
+        setEmployees([]);
       }
     };
 
     fetchData();
   }, []);
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    const { departments, priorities, employees } = newFilters;
+
+    const filtered = tasks.filter((task) => {
+      const departmentMatch = departments.length === 0 || departments.includes(task.department.name);
+      const priorityMatch = priorities.length === 0 || priorities.includes(task.priority.name);
+      const employeeMatch =
+        employees.length === 0 ||
+        employees.includes(`${task.employee.name} ${task.employee.surname}`);
+      return departmentMatch && priorityMatch && employeeMatch;
+    });
+
+    setFilteredTasks(filtered);
+  };
 
   const getColorClass = (statusName) => {
     switch (statusName) {
@@ -95,36 +112,46 @@ export default function Home() {
       <h1 className={styles.h1}>დავალებების გვერდი</h1>
 
       <div className={styles.Choices3}>
-        <Choices3 departments={departments} priorities={priorities} statuses={statuses} />
+        <Choices3
+          departments={departments}
+          priorities={priorities}
+          employees={employees}
+          onFilterChange={handleFilterChange}
+        />
       </div>
-
+      <div>
+        <Filter filters={filters} />
+      </div>
       <div className={styles.cardsContainer}>
-        {statuses.map((status) => {
-          const statusTasks = tasks.filter((task) => task.status.name === status.name);
-          return (
-            <div key={status.id} className={styles.column}>
-              
-              <button className={`${cardStyles.button} ${getColorClass(status.name)}`}>
-                {status.name}
-              </button>
-              {statusTasks.length > 0 ? (
-                statusTasks.map((task) => (
-                  <Cards
-                    key={task.id}
-                    text={task.status.name}
-                    date={task.due_date.split("T")[0]}
-                    title={task.name}
-                    description={task.description}
-                    imgSrc={task.employee.avatar}
-                    comments={0}
-                  />
-                ))
-              ) : (
-                <p>არაფერია</p>
-              )}
-            </div>
-          );
-        })}
+        {statuses.length > 0 ? (
+          statuses.map((status) => {
+            const statusTasks = filteredTasks.filter((task) => task.status.name === status.name);
+            return (
+              <div key={status.id} className={styles.column}>
+                <button className={`${cardStyles.button} ${getColorClass(status.name)}`}>
+                  {status.name}
+                </button>
+                {statusTasks.length > 0 ? (
+                  statusTasks.map((task) => (
+                    <Cards
+                      key={task.id}
+                      text={task.status.name}
+                      date={task.due_date.split("T")[0]}
+                      title={task.name}
+                      description={task.description}
+                      imgSrc={task.employee.avatar || "/default-avatar.jpg"}
+                      comments={0}
+                    />
+                  ))
+                ) : (
+                  <p>ამ სტატუსში დავალებები არ არის</p>
+                )}
+              </div>
+            );
+          })
+        ) : (
+          <p>სტატუსები ვერ ჩაიტვირთა</p>
+        )}
       </div>
     </div>
   );

@@ -3,11 +3,18 @@ import { useState } from "react";
 import styles from "./WomanCheckbox.module.scss";
 import Image from "next/image";
 
-const WomanCheckbox = () => {
+type Props = {
+  name: string;
+  avatar?: string;
+};
+
+const WomanCheckbox = ({ name, avatar = "/qali.jpg" }: Props) => {
   const [isChecked, setIsChecked] = useState(false);
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} womanCheckboxContainer`}>
+      {" "}
+      {/* Add global class */}
       <label className={styles.checkboxWrapper}>
         <input
           type="checkbox"
@@ -19,12 +26,12 @@ const WomanCheckbox = () => {
       </label>
       <Image
         className={styles.img}
-        src="/qali.jpg"
+        src={avatar}
         width={28}
         height={28}
-        alt="qali"
-      ></Image>
-      <p className={styles.p}>მარკეტინგის დეპარტამენტი</p>
+        alt={name}
+      />
+      <p className={styles.p}>{name}</p>
     </div>
   );
 };

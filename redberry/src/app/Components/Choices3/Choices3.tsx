@@ -1,46 +1,53 @@
 "use client";
 import { useState } from "react";
-import styles from "./Choices3.module.scss";
-import Image from "next/image";
 import Chamoshla from "../Chamoshla/Chamoshla";
-import Tanamshromeli from "../Tanamshromeli/Tanamshromeli";
-
-type Department = { name: string };
-type Priority = { name: string };
-type Status = { name: string };
+import Image from "next/image";
+import styles from "./Choices3.module.scss";
 
 type Props = {
-  departments: Department[];
-  priorities: Priority[];
-  statuses: Status[];
+  departments: { name: string }[];
+  priorities: { name: string }[];
+  employees: { name?: string; surname?: string; avatar?: string }[];
+  onFilterChange: (filters: {
+    departments: string[];
+    priorities: string[];
+    employees: string[];
+  }) => void;
 };
 
-const Choices3 = ({ departments, priorities, statuses }: Props) => {
+const Choices3 = ({
+  departments,
+  priorities,
+  employees,
+  onFilterChange,
+}: Props) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [selectedFilters, setSelectedFilters] = useState({
+    departments: [],
+    priorities: [],
+    employees: [],
+  });
 
   const toggleDropdown = (dropdown: string) => {
     setOpenDropdown(openDropdown === dropdown ? null : dropdown);
   };
 
-  const getCheckboxTexts = (dropdown: string) => {
-    switch (dropdown) {
-      case "დეპარტამენტი":
-        return departments.map((dept) => dept.name);
-      case "პრიორიტეტი":
-        return priorities.map((priority) => {
-          switch (priority.name.toLowerCase()) {
-            case "high":
-              return "მაღალი";
-            case "medium":
-              return "საშუალო";
-            case "low":
-              return "დაბალი";
-            default:
-              return priority.name;
-          }
-        });
-      case "სტატუსი": 
-        return statuses.map((status) => status.name);
+  const handleSelect = (type: string, selected: string[]) => {
+    const updatedFilters = { ...selectedFilters, [type]: selected };
+    setSelectedFilters(updatedFilters);
+    onFilterChange(updatedFilters);
+  };
+
+  const getCheckboxTexts = (type: string) => {
+    switch (type) {
+      case "departments":
+        return departments.map((d) => d.name);
+      case "priorities":
+        return priorities.map((p) => p.name);
+      case "employees":
+        return employees.map((e) =>
+          `${e.name || ""} ${e.surname || ""}`.trim()
+        );
       default:
         return [];
     }
@@ -48,72 +55,30 @@ const Choices3 = ({ departments, priorities, statuses }: Props) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.component}>
-        <div className={styles.dropdown}>
-          <p className={styles.p}>დეპარტამენტი</p>
-          <div
-            onClick={() => toggleDropdown("დეპარტამენტი")}
-            className={styles.iconWrapper}
-          >
-            <Image
-              className={styles.image}
-              src="/down.svg"
-              width={24}
-              height={24}
-              alt="image"
-            />
+      {["departments", "priorities", "employees"].map((type) => (
+        <div key={type} className={styles.component}>
+          <div className={styles.dropdown} onClick={() => toggleDropdown(type)}>
+            <p>
+              {type === "departments"
+                ? "დეპარტამენტი"
+                : type === "priorities"
+                ? "პრიორიტეტი"
+                : "თანამშრომელი"}
+            </p>
+            <Image src="/down.svg" width={24} height={24} alt="dropdown" />
           </div>
+          {openDropdown === type && (
+            <div className={styles.chamoshlaWrapper}>
+              <Chamoshla
+                checkboxTexts={getCheckboxTexts(type)}
+                employees={type === "employees" ? employees : undefined}
+                useWomanCheckbox={type === "employees"}
+                onSelect={(selected) => handleSelect(type, selected)}
+              />
+            </div>
+          )}
         </div>
-        {openDropdown === "დეპარტამენტი" && (
-          <div className={styles.chamoshlaWrapper}>
-            <Chamoshla checkboxTexts={getCheckboxTexts("დეპარტამენტი")} />
-          </div>
-        )}
-      </div>
-      <div className={styles.component}>
-        <div className={styles.dropdown}>
-          <p className={styles.p}>პრიორიტეტი</p>
-          <div
-            onClick={() => toggleDropdown("პრიორიტეტი")}
-            className={styles.iconWrapper}
-          >
-            <Image
-              className={styles.image}
-              src="/down.svg"
-              width={24}
-              height={24}
-              alt="image"
-            />
-          </div>
-        </div>
-        {openDropdown === "პრიორიტეტი" && (
-          <div className={styles.chamoshlaWrapper}>
-            <Chamoshla checkboxTexts={getCheckboxTexts("პრიორიტეტი")} />
-          </div>
-        )}
-      </div>
-      <div className={styles.component}>
-        <div className={styles.dropdown}>
-          <p className={styles.p}>სტატუსი</p> 
-          <div
-            onClick={() => toggleDropdown("სტატუსი")}
-            className={styles.iconWrapper}
-          >
-            <Image
-              className={styles.image}
-              src="/down.svg"
-              width={24}
-              height={24}
-              alt="image"
-            />
-          </div>
-        </div>
-        {openDropdown === "სტატუსი" && (
-          <div className={styles.chamoshlaWrapper}>
-            <Chamoshla checkboxTexts={getCheckboxTexts("სტატუსი")} />
-          </div>
-        )}
-      </div>
+      ))}
     </div>
   );
 };

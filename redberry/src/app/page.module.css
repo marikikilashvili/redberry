@@ -7,6 +7,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Four equal columns */
   gap: 52px; /* Your original gap */
+  padding-top: 24px;
 }
 
 .column {
@@ -55,5 +56,5 @@
 }
 
 .Choices3 {
-  padding-bottom: 79px;
+  padding-bottom: 25px;
 }

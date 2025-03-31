@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  align-items: center;
+  max-width: 500px;
+  //   height: 29px;
+  border: 1px solid #ced4da;
+  padding: 6px 10px;
+  border-radius: 43px;
+  gap: 4px;
+}
+.p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #343a40;
+}
+.filterContainer {
+  display: flex;
+}
