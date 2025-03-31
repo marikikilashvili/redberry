@@ -1,8 +1,17 @@
+"use client";
+import styles from "./Filter.module.scss";
 import Image from "next/image";
-import styles from "./Filter.module.scss"; // Adjust the import path as needed
 
-const Filter = ({ filters, onRemoveFilter }) => {
-  // Combine all filters into an array of { category, value } objects
+type Props = {
+  filters: {
+    departments: string[];
+    priorities: string[];
+    employees: string[];
+  };
+  onRemoveFilter: (category: string, value: string) => void;
+};
+
+const Filter = ({ filters, onRemoveFilter }: Props) => {
   const allFilters = [
     ...filters.departments.map((value) => ({ category: "departments", value })),
     ...filters.priorities.map((value) => ({ category: "priorities", value })),

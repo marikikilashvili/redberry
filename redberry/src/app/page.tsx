@@ -22,42 +22,68 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const taskResponse = await fetch("https://momentum.redberryinternship.ge/api/tasks", {
-          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
-        });
-        if (!taskResponse.ok) throw new Error(`Fetch tasks failed: ${taskResponse.status}`);
+        const taskResponse = await fetch(
+          "https://momentum.redberryinternship.ge/api/tasks",
+          {
+            headers: {
+              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+            },
+          }
+        );
+        if (!taskResponse.ok)
+          throw new Error(`Fetch tasks failed: ${taskResponse.status}`);
         const taskResult = await taskResponse.json();
         console.log("Fetched Tasks:", taskResult);
         setTasks(taskResult || []);
         setFilteredTasks(taskResult || []); // Initially show all tasks
 
-        const deptResponse = await fetch("https://momentum.redberryinternship.ge/api/departments", {
-          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
-        });
+        const deptResponse = await fetch(
+          "https://momentum.redberryinternship.ge/api/departments",
+          {
+            headers: {
+              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+            },
+          }
+        );
         if (!deptResponse.ok) throw new Error("Fetch departments failed");
         const deptResult = await deptResponse.json();
         console.log("Fetched Departments:", deptResult);
         setDepartments(deptResult || []);
 
-        const priorityResponse = await fetch("https://momentum.redberryinternship.ge/api/priorities", {
-          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
-        });
+        const priorityResponse = await fetch(
+          "https://momentum.redberryinternship.ge/api/priorities",
+          {
+            headers: {
+              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+            },
+          }
+        );
         if (!priorityResponse.ok) throw new Error("Fetch priorities failed");
         const priorityResult = await priorityResponse.json();
         console.log("Fetched Priorities:", priorityResult);
         setPriorities(priorityResult || []);
 
-        const statusResponse = await fetch("https://momentum.redberryinternship.ge/api/statuses", {
-          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
-        });
+        const statusResponse = await fetch(
+          "https://momentum.redberryinternship.ge/api/statuses",
+          {
+            headers: {
+              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+            },
+          }
+        );
         if (!statusResponse.ok) throw new Error("Fetch statuses failed");
         const statusResult = await statusResponse.json();
         console.log("Fetched Statuses:", statusResult);
         setStatuses(statusResult || []);
 
-        const employeeResponse = await fetch("https://momentum.redberryinternship.ge/api/employees", {
-          headers: { Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d` },
-        });
+        const employeeResponse = await fetch(
+          "https://momentum.redberryinternship.ge/api/employees",
+          {
+            headers: {
+              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+            },
+          }
+        );
         if (!employeeResponse.ok) throw new Error("Fetch employees failed");
         const employeeResult = await employeeResponse.json();
         console.log("Fetched Employees:", employeeResult);
@@ -81,8 +107,10 @@ export default function Home() {
     const { departments, priorities, employees } = newFilters;
 
     const filtered = tasks.filter((task) => {
-      const departmentMatch = departments.length === 0 || departments.includes(task.department.name);
-      const priorityMatch = priorities.length === 0 || priorities.includes(task.priority.name);
+      const departmentMatch =
+        departments.length === 0 || departments.includes(task.department.name);
+      const priorityMatch =
+        priorities.length === 0 || priorities.includes(task.priority.name);
       const employeeMatch =
         employees.length === 0 ||
         employees.includes(`${task.employee.name} ${task.employee.surname}`);
@@ -90,6 +118,37 @@ export default function Home() {
     });
 
     setFilteredTasks(filtered);
+  };
+
+  // Function to remove a filter and update tasks
+  const removeFilter = (category, value) => {
+    setFilters((prevFilters) => {
+      // Create a new filters object and remove the specified value
+      const newFilters = { ...prevFilters };
+      newFilters[category] = newFilters[category].filter(
+        (item) => item !== value
+      );
+
+      // Re-filter the tasks based on the updated filters
+      const filtered = tasks.filter((task) => {
+        const departmentMatch =
+          newFilters.departments.length === 0 ||
+          newFilters.departments.includes(task.department.name);
+        const priorityMatch =
+          newFilters.priorities.length === 0 ||
+          newFilters.priorities.includes(task.priority.name);
+        const employeeMatch =
+          newFilters.employees.length === 0 ||
+          newFilters.employees.includes(
+            `${task.employee.name} ${task.employee.surname}`
+          );
+        return departmentMatch && priorityMatch && employeeMatch;
+      });
+
+      // Update the filtered tasks state
+      setFilteredTasks(filtered);
+      return newFilters;
+    });
   };
 
   const getColorClass = (statusName) => {
@@ -120,15 +179,21 @@ export default function Home() {
         />
       </div>
       <div>
-        <Filter filters={filters} />
+        <Filter filters={filters} onRemoveFilter={removeFilter} />
       </div>
       <div className={styles.cardsContainer}>
         {statuses.length > 0 ? (
           statuses.map((status) => {
-            const statusTasks = filteredTasks.filter((task) => task.status.name === status.name);
+            const statusTasks = filteredTasks.filter(
+              (task) => task.status.name === status.name
+            );
             return (
               <div key={status.id} className={styles.column}>
-                <button className={`${cardStyles.button} ${getColorClass(status.name)}`}>
+                <button
+                  className={`${cardStyles.button} ${getColorClass(
+                    status.name
+                  )}`}
+                >
                   {status.name}
                 </button>
                 {statusTasks.length > 0 ? (
