@@ -105,8 +105,6 @@ export default function Home() {
   const filterTasks = (currentFilters) => {
     const { departments, priorities, employees } = currentFilters;
 
-    console.log("Selected Filters - Employees:", employees);
-
     const filtered = tasks.filter((task) => {
       const departmentMatch =
         departments.length === 0 ||
@@ -121,7 +119,6 @@ export default function Home() {
             task.employee.surname?.trim() || ""
           }`.trim()
         : null;
-      console.log("Task Employee Name:", taskEmployeeName);
 
       const employeeMatch =
         employees.length === 0 ||
@@ -133,7 +130,6 @@ export default function Home() {
       return departmentMatch && priorityMatch && employeeMatch;
     });
 
-    console.log("Filtered Tasks:", filtered);
     setFilteredTasks(filtered);
   };
 
@@ -177,6 +173,7 @@ export default function Home() {
           departments={departments}
           priorities={priorities}
           employees={employees}
+          filters={filters}
           onFilterChange={handleFilterChange}
         />
       </div>

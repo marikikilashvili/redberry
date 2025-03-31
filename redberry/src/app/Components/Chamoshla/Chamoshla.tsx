@@ -9,6 +9,7 @@ type Props = {
   checkboxTexts: string[];
   employees?: { name?: string; surname?: string; avatar?: string }[];
   useWomanCheckbox?: boolean;
+  selectedItems?: string[]; // New prop to pre-check boxes
   onSelect: (selected: string[]) => void;
 };
 
@@ -16,48 +17,44 @@ const Chamoshla = ({
   checkboxTexts,
   employees = [],
   useWomanCheckbox = false,
+  selectedItems = [], // Default to empty array
   onSelect,
 }: Props) => {
-  const [checkedStates, setCheckedStates] = useState<boolean[]>(
-    new Array(checkboxTexts.length).fill(false)
+  const [checks, setChecks] = useState<boolean[]>(
+    checkboxTexts.map((text) => selectedItems.includes(text))
   );
 
   const handleCheckboxChange = (index: number, checked: boolean) => {
-    const newCheckedStates = [...checkedStates];
-    newCheckedStates[index] = checked;
-    setCheckedStates(newCheckedStates);
+    const newChecks = [...checks];
+    newChecks[index] = checked;
+    setChecks(newChecks);
   };
 
   const handleSelect = () => {
-    const selected = checkboxTexts.filter((_, index) => checkedStates[index]);
+    const selected = checkboxTexts.filter((_, index) => checks[index]);
     onSelect(selected);
-  };
-
-  const renderCheckbox = (label: string, index: number) => {
-    if (useWomanCheckbox && employees[index]) {
-      return (
-        <WomanCheckbox
-          key={index}
-          name={label}
-          avatar={employees[index].avatar || "/qali.jpg"}
-          checked={checkedStates[index]}
-          onChange={(checked) => handleCheckboxChange(index, checked)}
-        />
-      );
-    }
-    return (
-      <Checkbox
-        key={index}
-        label={label}
-        checked={checkedStates[index]}
-        onChange={(checked) => handleCheckboxChange(index, checked)}
-      />
-    );
   };
 
   return (
     <div className={styles.container}>
-      {checkboxTexts.map((label, index) => renderCheckbox(label, index))}
+      {checkboxTexts.map((label, index) =>
+        useWomanCheckbox && employees[index] ? (
+          <WomanCheckbox
+            key={index}
+            name={label}
+            avatar={employees[index].avatar || "/qali.jpg"}
+            checked={checks[index]}
+            onChange={(checked) => handleCheckboxChange(index, checked)}
+          />
+        ) : (
+          <Checkbox
+            key={index}
+            label={label}
+            checked={checks[index]}
+            onChange={(checked) => handleCheckboxChange(index, checked)}
+          />
+        )
+      )}
       <div className={styles.button}>
         <CustomButton text="არჩევა" onClick={handleSelect} />
       </div>

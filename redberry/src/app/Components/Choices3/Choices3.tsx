@@ -1,13 +1,17 @@
-"use client";
-import { useState } from "react";
-import Chamoshla from "../Chamoshla/Chamoshla";
-import Image from "next/image";
-import styles from "./Choices3.module.scss";
+import { useState, useEffect } from "react";
+import Image from "next/image"; // Assuming Next.js is used
+import Chamoshla from "../Chamoshla/Chamoshla"; // Adjust the import path as needed
+import styles from "./Choices3.module.scss"; // Adjust the CSS module path as needed
 
 type Props = {
   departments: { name: string }[];
   priorities: { name: string }[];
   employees: { name?: string; surname?: string; avatar?: string }[];
+  filters: {
+    departments: string[];
+    priorities: string[];
+    employees: string[];
+  };
   onFilterChange: (filters: {
     departments: string[];
     priorities: string[];
@@ -19,14 +23,16 @@ const Choices3 = ({
   departments,
   priorities,
   employees,
+  filters,
   onFilterChange,
 }: Props) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [selectedFilters, setSelectedFilters] = useState({
-    departments: [],
-    priorities: [],
-    employees: [],
-  });
+  const [selectedFilters, setSelectedFilters] = useState(filters);
+
+  // Sync selectedFilters with the filters prop whenever it changes
+  useEffect(() => {
+    setSelectedFilters(filters);
+  }, [filters]);
 
   const toggleDropdown = (dropdown: string) => {
     setOpenDropdown(openDropdown === dropdown ? null : dropdown);
@@ -36,18 +42,18 @@ const Choices3 = ({
     const updatedFilters = { ...selectedFilters, [type]: selected };
     setSelectedFilters(updatedFilters);
     onFilterChange(updatedFilters);
-    setOpenDropdown(null); // Add this to close the dropdown
+    setOpenDropdown(null); // Close the dropdown after selection
   };
 
   const getCheckboxTexts = (type: string) => {
     switch (type) {
       case "departments":
-        return departments.map((d) => d.name.trim());
+        return departments.map((d) => d.name);
       case "priorities":
-        return priorities.map((p) => p.name.trim());
+        return priorities.map((p) => p.name);
       case "employees":
         return employees.map((e) =>
-          `${e.name?.trim() || ""} ${e.surname?.trim() || ""}`.trim()
+          `${e.name || ""} ${e.surname || ""}`.trim()
         );
       default:
         return [];
