@@ -10,9 +10,18 @@ type Props = {
   description: string;
   imgSrc: string;
   comments: number;
+  priority?: string;
 };
 
-function Cards({ text, date, title, description, imgSrc, comments }: Props) {
+function Cards({
+  text,
+  date,
+  title,
+  description,
+  imgSrc,
+  comments,
+  priority,
+}: Props) {
   const getColorClass = () => {
     switch (text) {
       case "დასაწყები":
@@ -28,14 +37,29 @@ function Cards({ text, date, title, description, imgSrc, comments }: Props) {
     }
   };
 
+  const mapPriorityToIcon = (priority: string) => {
+    switch (priority) {
+      case "დაბალი":
+        return "low";
+      case "საშუალო":
+        return "medium";
+      case "მაღალი":
+        return "high";
+      default:
+        return "low"; // Fallback
+    }
+  };
+
   return (
     <div className={styles.gap}>
-      {/* Removed the button from here */}
       <div className={`${styles.container} ${getColorClass()}`}>
         <div className={styles.space2}>
           <div className={styles.space}>
             <div className={styles.buttons}>
-              <SixButtons priority="low" size="small" />
+              <SixButtons
+                priority={priority ? mapPriorityToIcon(priority) : "low"}
+                size="small"
+              />
               <ColouredButton color="yellow" />
             </div>
             <div>

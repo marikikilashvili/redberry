@@ -35,7 +35,7 @@ export default function Home() {
         const taskResult = await taskResponse.json();
         console.log("Fetched Tasks:", taskResult);
         setTasks(taskResult || []);
-        setFilteredTasks(taskResult || []); // Initially show all tasks
+        setFilteredTasks(taskResult || []);
 
         const deptResponse = await fetch(
           "https://momentum.redberryinternship.ge/api/departments",
@@ -102,9 +102,9 @@ export default function Home() {
     fetchData();
   }, []);
 
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
-    const { departments, priorities, employees } = newFilters;
+  // Reusable function to filter tasks based on current filters
+  const filterTasks = (currentFilters) => {
+    const { departments, priorities, employees } = currentFilters;
 
     const filtered = tasks.filter((task) => {
       const departmentMatch =
@@ -120,33 +120,18 @@ export default function Home() {
     setFilteredTasks(filtered);
   };
 
-  // Function to remove a filter and update tasks
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    filterTasks(newFilters);
+  };
+
   const removeFilter = (category, value) => {
     setFilters((prevFilters) => {
-      // Create a new filters object and remove the specified value
       const newFilters = { ...prevFilters };
       newFilters[category] = newFilters[category].filter(
         (item) => item !== value
       );
-
-      // Re-filter the tasks based on the updated filters
-      const filtered = tasks.filter((task) => {
-        const departmentMatch =
-          newFilters.departments.length === 0 ||
-          newFilters.departments.includes(task.department.name);
-        const priorityMatch =
-          newFilters.priorities.length === 0 ||
-          newFilters.priorities.includes(task.priority.name);
-        const employeeMatch =
-          newFilters.employees.length === 0 ||
-          newFilters.employees.includes(
-            `${task.employee.name} ${task.employee.surname}`
-          );
-        return departmentMatch && priorityMatch && employeeMatch;
-      });
-
-      // Update the filtered tasks state
-      setFilteredTasks(filtered);
+      filterTasks(newFilters);
       return newFilters;
     });
   };
@@ -206,6 +191,10 @@ export default function Home() {
                       description={task.description}
                       imgSrc={task.employee.avatar || "/default-avatar.jpg"}
                       comments={0}
+                      priority={task.priority.name}
+                      department={
+                        task.department?.name || "უცნობი დეპარტამენტი"
+                      } // Fallback
                     />
                   ))
                 ) : (
