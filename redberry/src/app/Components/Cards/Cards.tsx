@@ -11,6 +11,7 @@ type Props = {
   imgSrc: string;
   comments: number;
   priority?: string;
+  department: string;
 };
 
 function Cards({
@@ -21,6 +22,7 @@ function Cards({
   imgSrc,
   comments,
   priority,
+  department,
 }: Props) {
   const getColorClass = () => {
     switch (text) {
@@ -46,9 +48,11 @@ function Cards({
       case "მაღალი":
         return "high";
       default:
-        return "low"; // Fallback
+        return "low";
     }
   };
+
+  console.log("Department in Cards:", department);
 
   return (
     <div className={styles.gap}>
@@ -60,7 +64,7 @@ function Cards({
                 priority={priority ? mapPriorityToIcon(priority) : "low"}
                 size="small"
               />
-              <ColouredButton color="yellow" />
+              <ColouredButton department={department} />
             </div>
             <div>
               <h3 className={styles.h3}>{date}</h3>
@@ -77,16 +81,16 @@ function Cards({
               <Image
                 className={styles.qali}
                 src={imgSrc}
-                width={31}
-                height={31}
+                width={40}
+                height={40}
                 alt="Profile image"
               />
             </div>
             <div className={styles.comment}>
               <Image
                 src="/Vector.svg"
-                width={20}
-                height={18.5}
+                width={24}
+                height={22}
                 alt="Comment icon"
               />
               <p>{comments}</p>
