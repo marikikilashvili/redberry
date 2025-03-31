@@ -102,21 +102,38 @@ export default function Home() {
     fetchData();
   }, []);
 
-  // Reusable function to filter tasks based on current filters
   const filterTasks = (currentFilters) => {
     const { departments, priorities, employees } = currentFilters;
 
+    console.log("Selected Filters - Employees:", employees);
+
     const filtered = tasks.filter((task) => {
       const departmentMatch =
-        departments.length === 0 || departments.includes(task.department.name);
+        departments.length === 0 ||
+        (task.department && departments.includes(task.department.name?.trim()));
+
       const priorityMatch =
-        priorities.length === 0 || priorities.includes(task.priority.name);
+        priorities.length === 0 ||
+        (task.priority && priorities.includes(task.priority.name?.trim()));
+
+      const taskEmployeeName = task.employee
+        ? `${task.employee.name?.trim() || ""} ${
+            task.employee.surname?.trim() || ""
+          }`.trim()
+        : null;
+      console.log("Task Employee Name:", taskEmployeeName);
+
       const employeeMatch =
         employees.length === 0 ||
-        employees.includes(`${task.employee.name} ${task.employee.surname}`);
+        (taskEmployeeName &&
+          employees
+            .map((emp) => emp.toLowerCase())
+            .includes(taskEmployeeName.toLowerCase()));
+
       return departmentMatch && priorityMatch && employeeMatch;
     });
 
+    console.log("Filtered Tasks:", filtered);
     setFilteredTasks(filtered);
   };
 
@@ -194,7 +211,7 @@ export default function Home() {
                       priority={task.priority.name}
                       department={
                         task.department?.name || "უცნობი დეპარტამენტი"
-                      } // Fallback
+                      }
                     />
                   ))
                 ) : (

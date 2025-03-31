@@ -27,6 +27,8 @@ const getColorFromDepartment = (department: string): TagColor => {
       return "orange";
     case "უცნობი დეპარტამენტი":
       return "pink";
+    case "ტექნოლოგიების დეპარტამენტი":
+      return "yellow";
     default:
       console.log(
         "Falling back to default color for department:",

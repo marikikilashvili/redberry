@@ -36,17 +36,18 @@ const Choices3 = ({
     const updatedFilters = { ...selectedFilters, [type]: selected };
     setSelectedFilters(updatedFilters);
     onFilterChange(updatedFilters);
+    setOpenDropdown(null); // Add this to close the dropdown
   };
 
   const getCheckboxTexts = (type: string) => {
     switch (type) {
       case "departments":
-        return departments.map((d) => d.name);
+        return departments.map((d) => d.name.trim());
       case "priorities":
-        return priorities.map((p) => p.name);
+        return priorities.map((p) => p.name.trim());
       case "employees":
         return employees.map((e) =>
-          `${e.name || ""} ${e.surname || ""}`.trim()
+          `${e.name?.trim() || ""} ${e.surname?.trim() || ""}`.trim()
         );
       default:
         return [];
