@@ -1,0 +1,71 @@
+.container {
+  max-width: 1680px;
+  margin: auto;
+}
+.cardz {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cardzs {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+}
+.cardzss {
+  display: flex;
+  align-items: center;
+  gap: 120px;
+}
+.cards {
+  width: 493px;
+  height: 210px;
+  position: relative;
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
+.h1 {
+  color: #212529;
+  margin-bottom: 36px;
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.h2 {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 150%;
+  letter-spacing: 0%;
+}
+.h4 {
+  padding-top: 63px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #2a2a2a;
+}
+.p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0%;
+}
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  margin-bottom: 14px;
+  margin-top: 50px;
+}
+.date {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0%;
+}

@@ -53,8 +53,9 @@ export default function Home() {
                 {statusTasks.length > 0 ? (
                   statusTasks.map((task) => (
                     <Cards
+                      id={task.id} // Pass the task ID
                       key={task.id}
-                      text={task.status?.name || "Unknown Status"} // Add fallback
+                      text={task.status?.name || "Unknown Status"}
                       date={task.due_date.split("T")[0]}
                       title={task.name}
                       description={task.description}

@@ -1,20 +1,26 @@
+// app/Components/Statusi/Statusi.tsx
 "use client";
 import styles from "./Statusi.module.scss";
 import Image from "next/image";
 import { useState, MouseEvent } from "react";
 
-export default function DropdownOptions() {
+type Props = {
+  initialStatus: string; // The current status from the fetched task
+  onStatusChange?: (newStatus: string) => void; // Optional callback to handle status updates
+};
+
+export default function Statusi({ initialStatus, onStatusChange }: Props) {
   const options = [
     "დასაწყები",
     "პროგრესში",
     "მზად ტესტირებისთვის",
     "დასრულებული",
-    "IT განყოფილება",
-    "გაყიდვების დეპარტამენტი",
   ];
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState(
+    options.includes(initialStatus) ? initialStatus : options[0] // Set initial status from prop
+  );
 
   const handleIconClick = (e: MouseEvent<HTMLImageElement>) => {
     e.preventDefault();
@@ -24,12 +30,15 @@ export default function DropdownOptions() {
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
     setIsDropdownVisible(false);
+    if (onStatusChange) {
+      onStatusChange(option); // Notify parent of the status change
+    }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.container1}>
-        <h2 className={styles.title}>სტატუსი*</h2>
+        {/* <h2 className={styles.title}>სტატუსი*</h2> */}
         <div className={styles.dropdownWrapper}>
           <div className={styles.selectedOption}>
             <span className={styles.selectedText}>{selectedOption}</span>

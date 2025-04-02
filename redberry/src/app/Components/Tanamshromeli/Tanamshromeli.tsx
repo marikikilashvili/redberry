@@ -1,3 +1,4 @@
+// app/Components/Tanamshromeli/Tanamshromeli.tsx
 import styles from "./Tanamshromeli.module.scss";
 import Image from "next/image";
 
