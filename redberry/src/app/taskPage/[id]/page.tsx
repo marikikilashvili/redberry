@@ -8,6 +8,8 @@ import SixButtons from "@/app/Components/SixButtons/SixButtons";
 import Statusi from "@/app/Components/Statusi/Statusi";
 import ColouredButton from "@/app/Components/ColouredButton/ColouredButton";
 import Tanamshromeli from "@/app/Components/Tanamshromeli/Tanamshromeli";
+import CustomButton from "@/app/Components/CustomButton/CustomButton";
+import Comment from "@/app/Components/Comment/Comment";
 
 interface Task {
   id: number;
@@ -108,52 +110,90 @@ export default function TaskPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.buttons}>
-        <SixButtons
-          priority={
-            task.priority.name ? mapPriorityToIcon(task.priority.name) : "low"
-          }
-          size="small"
-        />
-        <ColouredButton department={task.department.name} />
-      </div>
-      <h1 className={styles.h1}>Task Details: {task.name}</h1>
+      <div>
+        <div className={styles.buttons}>
+          <SixButtons
+            priority={
+              task.priority.name ? mapPriorityToIcon(task.priority.name) : "low"
+            }
+            size="small"
+          />
+          <ColouredButton department={task.department.name} />
+        </div>
+        <h1 className={styles.h1}>Task Details: {task.name}</h1>
 
-      <h2 className={styles.h2}>{task.description}</h2>
-      <h4 className={styles.h4}>დავალების დეტალები</h4>
-      <div className={styles.cards}>
-        <div className={styles.cardzss}>
-          <div className={styles.cardz}>
-            <Image src="/pie-chart.svg" width={24} height={24} alt="chart" />
-            <p className={styles.p}>სტატუსი</p>
+        <h2 className={styles.h2}>{task.description}</h2>
+        <h4 className={styles.h4}>დავალების დეტალები</h4>
+        <div className={styles.cards}>
+          <div className={styles.cardzss}>
+            <div className={styles.cardz}>
+              <Image src="/pie-chart.svg" width={24} height={24} alt="chart" />
+              <p className={styles.p}>სტატუსი</p>
+            </div>
+            <div>
+              <Statusi
+                initialStatus={task.status.name}
+                onStatusChange={handleStatusChange}
+              />
+            </div>
           </div>
-          <div>
-            <Statusi
-              initialStatus={task.status.name}
-              onStatusChange={handleStatusChange}
-            />
+          <div className={styles.cardzs}>
+            <div className={styles.cardz}>
+              <Image src="/user.svg" width={24} height={24} alt="user" />
+              <p className={styles.p}>თანამშრომელი</p>
+            </div>
+            <div>
+              <Tanamshromeli
+                text={`${task.employee.name} ${task.employee.surname}`}
+                imageSrc={task.employee.avatar || "/default-avatar.jpg"}
+              />
+            </div>
+          </div>
+          <div className={styles.cardzs}>
+            <div className={styles.cardz}>
+              <Image
+                src="/calendar.svg"
+                width={24}
+                height={24}
+                alt="calendar"
+              />
+              <p className={styles.p}>დავალების ვადა</p>
+            </div>
+            <div>
+              <p className={styles.date}>{task.due_date.split("T")[0]}</p>
+            </div>
           </div>
         </div>
-        <div className={styles.cardzs}>
-          <div className={styles.cardz}>
-            <Image src="/user.svg" width={24} height={24} alt="user" />
-            <p className={styles.p}>თანამშრომელი</p>
-          </div>
-          <div>
-            <Tanamshromeli
-              text={`${task.employee.name} ${task.employee.surname}`}
-              imageSrc={task.employee.avatar || "/default-avatar.jpg"}
-            />
+      </div>
+
+      <div className={styles.messages}>
+        <div className={styles.relative}>
+          <input className={styles.input} type="text" placeholder="type text" />
+          <div className={styles.button}>
+            <CustomButton text="დააკომენტარე" />
           </div>
         </div>
-        <div className={styles.cardzs}>
-          <div className={styles.cardz}>
-            <Image src="/calendar.svg" width={24} height={24} alt="calendar" />
-            <p className={styles.p}>დავალების ვადა</p>
-          </div>
-          <div>
-            <p className={styles.date}>{task.due_date.split("T")[0]}</p>
-          </div>
+        <p className={styles.title}>კომენტარები</p>
+        <div className={styles.message}>
+          <Comment
+            name="ემილია მორგანი"
+            imageSrc="/qali.jpg"
+            text="დიზაინი სუფთად ჩანს, მაგრამ კოდირებისას მნიშვნელოვანი იქნება."
+          />
+        </div>
+        <div className={styles.message}>
+          <Comment
+            name="ემილია მორგანი"
+            imageSrc="/qali.jpg"
+            text="დიზაინი სუფთად ჩანს, მაგრამ კოდირებისას მნიშვნელოვანი იქნება."
+          />
+        </div>{" "}
+        <div className={styles.message}>
+          <Comment
+            name="ემილია მორგანი"
+            imageSrc="/qali.jpg"
+            text="დიზაინი სუფთად ჩანს, მაგრამ კოდირებისას მნიშვნელოვანი იქნება."
+          />
         </div>
       </div>
     </div>

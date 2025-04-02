@@ -1,6 +1,8 @@
 .container {
   max-width: 1680px;
   margin: auto;
+  display: flex;
+  justify-content: space-between;
 }
 .cardz {
   display: flex;
@@ -67,5 +69,44 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 150%;
+  letter-spacing: 0%;
+}
+.messages {
+  width: 741px;
+  height: 975px;
+  margin-top: 99px;
+  border-radius: 10px;
+  border: 0.3px solid #ddd2ff;
+}
+.input {
+  margin-top: 85px;
+  display: flex;
+  width: 651px;
+  height: 35px;
+  margin-left: 20px;
+  border: none;
+}
+.button {
+  margin-top: 85px;
+  margin-right: 20px;
+}
+.relative {
+  display: flex;
+  width: 651px;
+  height: 135px;
+  margin: 40 auto;
+  border-radius: 10px;
+  border: 0.3px solid #adb5bd;
+}
+.message {
+  display: flex;
+  flex-direction: column;
+  margin: 38px 45px;
+}
+.title {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 100%;
+  margin: 38px 45px;
   letter-spacing: 0%;
 }
