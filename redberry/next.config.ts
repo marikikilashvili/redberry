@@ -1,14 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
-/** @type {import('next').NextConfig} */
-const nextConfig = {
   images: {
-    domains: ["momentum.redberryinternship.ge"],
+    domains: [
+      "api.dicebear.com", // For comment avatars
+      "momentum.redberryinternship.ge", // For employee avatars
+    ],
   },
 };
 
-module.exports = nextConfig;
 export default nextConfig;

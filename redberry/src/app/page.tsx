@@ -53,14 +53,14 @@ export default function Home() {
                 {statusTasks.length > 0 ? (
                   statusTasks.map((task) => (
                     <Cards
-                      id={task.id} // Pass the task ID
+                      id={task.id}
                       key={task.id}
                       text={task.status?.name || "Unknown Status"}
                       date={task.due_date.split("T")[0]}
                       title={task.name}
                       description={task.description}
                       imgSrc={task.employee.avatar || "/default-avatar.jpg"}
-                      comments={0}
+                      comments={task.total_comments} // Changed from task.commentCount
                       priority={task.priority.name}
                       department={
                         task.department?.name || "უცნობი დეპარტამენტი"

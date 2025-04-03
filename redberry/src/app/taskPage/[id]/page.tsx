@@ -1,4 +1,3 @@
-// app/taskPage/[id]/page.tsx
 "use client";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
@@ -22,14 +21,22 @@ interface Task {
   employee: { name: string; surname: string; avatar?: string };
 }
 
+interface Comment {
+  id: number;
+  text: string;
+  author_nickname: string;
+  author_avatar?: string;
+}
+
 export default function TaskPage() {
   const { id } = useParams();
   const [task, setTask] = useState<Task | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   useEffect(() => {
-    const fetchTask = async () => {
+    const fetchTaskAndComments = async () => {
       try {
-        const response = await fetch(
+        const taskResponse = await fetch(
           `https://momentum.redberryinternship.ge/api/tasks/${id}`,
           {
             headers: {
@@ -37,16 +44,36 @@ export default function TaskPage() {
             },
           }
         );
-        if (!response.ok) throw new Error("Failed to fetch task");
-        const taskData = await response.json();
+        if (!taskResponse.ok) throw new Error("Failed to fetch task");
+        const taskData = await taskResponse.json();
         setTask(taskData);
+
+        const commentResponse = await fetch(
+          `https://momentum.redberryinternship.ge/api/tasks/${id}/comments`,
+          {
+            headers: {
+              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+            },
+          }
+        );
+        if (!commentResponse.ok) throw new Error("Failed to fetch comments");
+        const commentData = await commentResponse.json();
+        const mappedComments = commentData.map((c: any) => ({
+          id: c.id,
+          text: c.text,
+          author_nickname: c.author_nickname || "Unknown Author", // Fallback if missing
+          author_avatar: c.author_avatar, // No fallback here; handled in JSX
+        }));
+        setComments(mappedComments);
+        console.log("Fetched Comments:", mappedComments); // Debug to verify data
       } catch (error) {
-        console.error("Error fetching task:", error);
+        console.error("Error fetching task or comments:", error);
         setTask(null);
+        setComments([]);
       }
     };
 
-    if (id) fetchTask();
+    if (id) fetchTaskAndComments();
   }, [id]);
 
   const mapPriorityToIcon = (priority: string) => {
@@ -174,27 +201,20 @@ export default function TaskPage() {
           </div>
         </div>
         <p className={styles.title}>კომენტარები</p>
-        <div className={styles.message}>
-          <Comment
-            name="ემილია მორგანი"
-            imageSrc="/qali.jpg"
-            text="დიზაინი სუფთად ჩანს, მაგრამ კოდირებისას მნიშვნელოვანი იქნება."
-          />
-        </div>
-        <div className={styles.message}>
-          <Comment
-            name="ემილია მორგანი"
-            imageSrc="/qali.jpg"
-            text="დიზაინი სუფთად ჩანს, მაგრამ კოდირებისას მნიშვნელოვანი იქნება."
-          />
-        </div>{" "}
-        <div className={styles.message}>
-          <Comment
-            name="ემილია მორგანი"
-            imageSrc="/qali.jpg"
-            text="დიზაინი სუფთად ჩანს, მაგრამ კოდირებისას მნიშვნელოვანი იქნება."
-          />
-        </div>
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <div key={comment.id} className={styles.message}>
+              <Comment
+                name={comment.author_nickname} // Explicitly mapped
+                imageSrc={comment.author_avatar || "/default-avatar.jpg"} // Explicitly mapped with fallback
+                text={comment.text}
+                showLeft={true}
+              />
+            </div>
+          ))
+        ) : (
+          <p>კომენტარები არ არის</p>
+        )}
       </div>
     </div>
   );

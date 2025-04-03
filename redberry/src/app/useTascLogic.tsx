@@ -1,4 +1,3 @@
-// app/useTaskLogic.tsx
 import { useState, useEffect } from "react";
 
 // Define types for your data
@@ -30,6 +29,7 @@ interface Task {
   priority: Priority;
   department: Department;
   employee: Employee;
+  total_comments: number; // Changed from commentCount to match API
 }
 
 interface Filters {
