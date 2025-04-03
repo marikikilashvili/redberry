@@ -35,64 +35,65 @@ export default function TaskPage() {
   const { updateTask } = useTaskContext();
   const [task, setTask] = useState<Task | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
+  const [commentText, setCommentText] = useState("");
+  const [replyingTo, setReplyingTo] = useState<number | null>(null); // Track which comment is being replied to
+  const [replyText, setReplyText] = useState(""); // Text for the reply input
 
+  // Fetch task details
+  const fetchTask = async () => {
+    try {
+      const taskResponse = await fetch(
+        `https://momentum.redberryinternship.ge/api/tasks/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+          },
+        }
+      );
+      if (!taskResponse.ok) throw new Error("Failed to fetch task");
+      const taskData = await taskResponse.json();
+      setTask(taskData);
+    } catch (error) {
+      console.error("Error fetching task:", error);
+      setTask(null);
+    }
+  };
+
+  // Fetch comments
+  const fetchComments = async () => {
+    try {
+      const commentResponse = await fetch(
+        `https://momentum.redberryinternship.ge/api/tasks/${id}/comments`,
+        {
+          headers: {
+            Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+          },
+        }
+      );
+      if (!commentResponse.ok) throw new Error("Failed to fetch comments");
+      const commentData = await commentResponse.json();
+      const mappedComments = commentData.map((c: any) => ({
+        id: c.id,
+        text: c.text,
+        author_nickname: c.author_nickname || "Unknown Author",
+        author_avatar: c.author_avatar,
+      }));
+      setComments(mappedComments);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      setComments([]);
+    }
+  };
+
+  // Load task and comments on mount
   useEffect(() => {
-    const fetchTaskAndComments = async () => {
-      try {
-        console.log("Fetching task for ID:", id);
-        const taskResponse = await fetch(
-          `https://momentum.redberryinternship.ge/api/tasks/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
-            },
-          }
-        );
-        if (!taskResponse.ok) {
-          const errorText = await taskResponse.text();
-          console.error("Task fetch failed:", taskResponse.status, errorText);
-          throw new Error("Failed to fetch task");
-        }
-        const taskData = await taskResponse.json();
-        setTask(taskData);
-
-        console.log("Fetching comments for task ID:", id);
-        const commentResponse = await fetch(
-          `https://momentum.redberryinternship.ge/api/tasks/${id}/comments`,
-          {
-            headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
-            },
-          }
-        );
-        if (!commentResponse.ok) {
-          const errorText = await commentResponse.text();
-          console.error(
-            "Comments fetch failed:",
-            commentResponse.status,
-            errorText
-          );
-          throw new Error("Failed to fetch comments");
-        }
-        const commentData = await commentResponse.json();
-        const mappedComments = commentData.map((c: any) => ({
-          id: c.id,
-          text: c.text,
-          author_nickname: c.author_nickname || "Unknown Author",
-          author_avatar: c.author_avatar,
-        }));
-        setComments(mappedComments);
-        console.log("Fetched Comments:", mappedComments);
-      } catch (error) {
-        console.error("Error fetching task or comments:", error);
-        setTask(null);
-        setComments([]);
-      }
-    };
-
-    if (id) fetchTaskAndComments();
+    if (id) {
+      fetchTask();
+      fetchComments();
+    }
   }, [id]);
 
+  // Map priority to icon
   const mapPriorityToIcon = (priority: string) => {
     switch (priority) {
       case "დაბალი":
@@ -106,11 +107,11 @@ export default function TaskPage() {
     }
   };
 
+  // Handle status change
   const handleStatusChange = async (newStatus: string) => {
     if (!task) return;
 
     try {
-      console.log("Fetching statuses...");
       const statusResponse = await fetch(
         "https://momentum.redberryinternship.ge/api/statuses",
         {
@@ -119,33 +120,21 @@ export default function TaskPage() {
           },
         }
       );
-      if (!statusResponse.ok) {
-        const errorText = await statusResponse.text();
-        console.error(
-          "Statuses fetch failed:",
-          statusResponse.status,
-          errorText
-        );
-        throw new Error("Failed to fetch statuses");
-      }
+      if (!statusResponse.ok) throw new Error("Failed to fetch statuses");
       const statuses = await statusResponse.json();
       const newStatusObj = statuses.find(
         (status: { id: number; name: string }) => status.name === newStatus
       );
 
-      if (!newStatusObj) {
-        console.error("Status not found:", newStatus);
-        return;
-      }
+      if (!newStatusObj) return;
 
-      console.log("Updating task ID:", task.id, "to status:", newStatusObj);
       const updatedTask: Task = { ...task, status: newStatusObj };
       setTask(updatedTask);
 
       const response = await fetch(
         `https://momentum.redberryinternship.ge/api/tasks/${task.id}`,
         {
-          method: "PUT", // Changed from PATCH to PUT
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
@@ -154,16 +143,58 @@ export default function TaskPage() {
         }
       );
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Update failed:", response.status, errorText);
-        throw new Error("Failed to update task status");
-      }
+      if (!response.ok) throw new Error("Failed to update task status");
 
       updateTask(updatedTask);
-      console.log("Task status updated successfully");
     } catch (error) {
       console.error("Error updating task status:", error);
+    }
+  };
+
+  // Handle adding a new comment
+  const handleAddComment = async () => {
+    if (!commentText.trim()) return;
+    try {
+      const response = await fetch(
+        `https://momentum.redberryinternship.ge/api/tasks/${id}/comments`,
+        {
+          method: "Post",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+          },
+          body: JSON.stringify({ text: commentText }),
+        }
+      );
+      if (!response.ok) throw new Error("Failed to add comment");
+      setCommentText("");
+      await fetchComments();
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
+
+  // Handle reply submission
+  const handleReplySubmit = async (parentId: number) => {
+    if (!replyText.trim()) return;
+    try {
+      const response = await fetch(
+        `https://momentum.redberryinternship.ge/api/tasks/${id}/comments`,
+        {
+          method: "Post",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+          },
+          body: JSON.stringify({ text: replyText, parent_id: parentId }),
+        }
+      );
+      if (!response.ok) throw new Error("Failed to add reply");
+      setReplyText("");
+      setReplyingTo(null);
+      await fetchComments();
+    } catch (error) {
+      console.error("Error adding reply:", error);
     }
   };
 
@@ -241,9 +272,15 @@ export default function TaskPage() {
 
       <div className={styles.messages}>
         <div className={styles.relative}>
-          <input className={styles.input} type="text" placeholder="type text" />
+          <input
+            className={styles.input}
+            type="text"
+            placeholder="type text"
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+          />
           <div className={styles.button}>
-            <CustomButton text="დააკომენტარე" />
+            <CustomButton text="დააკომენტარე" onClick={handleAddComment} />
           </div>
         </div>
         <p className={styles.title}>კომენტარები</p>
@@ -255,7 +292,25 @@ export default function TaskPage() {
                 imageSrc={comment.author_avatar || "/default-avatar.jpg"}
                 text={comment.text}
                 showLeft={true}
+                onReplyClick={() => setReplyingTo(comment.id)} // Pass callback to Comment
               />
+              {replyingTo === comment.id && (
+                <div className={styles.relative}>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    placeholder="Type your reply"
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                  />
+                  <div className={styles.button}>
+                    <CustomButton
+                      text="დააკომენტარე"
+                      onClick={() => handleReplySubmit(comment.id)}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           ))
         ) : (
