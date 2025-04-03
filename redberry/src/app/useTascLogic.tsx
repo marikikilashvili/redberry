@@ -1,36 +1,5 @@
-import { useState, useEffect } from "react";
-
-// Define types for your data
-interface Department {
-  name: string;
-}
-
-interface Priority {
-  name: string;
-}
-
-interface Status {
-  id: number;
-  name: string;
-}
-
-interface Employee {
-  name: string;
-  surname: string;
-  avatar?: string;
-}
-
-interface Task {
-  id: number;
-  name: string;
-  description: string;
-  due_date: string;
-  status: Status;
-  priority: Priority;
-  department: Department;
-  employee: Employee;
-  total_comments: number; // Changed from commentCount to match API
-}
+import { useState, useMemo } from "react";
+import { useTaskContext } from "./TaskContext"; // Adjust path
 
 interface Filters {
   departments: string[];
@@ -39,105 +8,17 @@ interface Filters {
 }
 
 export const useTaskLogic = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [priorities, setPriorities] = useState<Priority[]>([]);
-  const [statuses, setStatuses] = useState<Status[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const { tasks, departments, priorities, statuses, employees } = useTaskContext();
   const [filters, setFilters] = useState<Filters>({
     departments: [],
     priorities: [],
     employees: [],
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const taskResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/tasks",
-          {
-            headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
-            },
-          }
-        );
-        if (!taskResponse.ok)
-          throw new Error(`Fetch tasks failed: ${taskResponse.status}`);
-        const taskResult = await taskResponse.json();
-        console.log("Fetched Tasks:", taskResult);
-        setTasks(taskResult || []);
-        setFilteredTasks(taskResult || []);
+  const filteredTasks = useMemo(() => {
+    const { departments, priorities, employees } = filters;
 
-        const deptResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/departments",
-          {
-            headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
-            },
-          }
-        );
-        if (!deptResponse.ok) throw new Error("Fetch departments failed");
-        const deptResult = await deptResponse.json();
-        console.log("Fetched Departments:", deptResult);
-        setDepartments(deptResult || []);
-
-        const priorityResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/priorities",
-          {
-            headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
-            },
-          }
-        );
-        if (!priorityResponse.ok) throw new Error("Fetch priorities failed");
-        const priorityResult = await priorityResponse.json();
-        console.log("Fetched Priorities:", priorityResult);
-        setPriorities(priorityResult || []);
-
-        const statusResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/statuses",
-          {
-            headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
-            },
-          }
-        );
-        if (!statusResponse.ok) throw new Error("Fetch statuses failed");
-        const statusResult = await statusResponse.json();
-        console.log("Fetched Statuses:", statusResult);
-        setStatuses(statusResult || []);
-
-        const employeeResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/employees",
-          {
-            headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
-            },
-          }
-        );
-        if (!employeeResponse.ok) throw new Error("Fetch employees failed");
-        const employeeResult = await employeeResponse.json();
-        console.log("Fetched Employees:", employeeResult);
-        setEmployees(employeeResult || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setTasks([]);
-        setFilteredTasks([]);
-        setDepartments([]);
-        setPriorities([]);
-        setStatuses([]);
-        setEmployees([]);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const filterTasks = (currentFilters: Filters) => {
-    const { departments, priorities, employees } = currentFilters;
-
-    const filtered = tasks.filter((task: Task) => {
+    return tasks.filter((task) => {
       const departmentMatch =
         departments.length === 0 ||
         (task.department && departments.includes(task.department.name?.trim()));
@@ -161,22 +42,16 @@ export const useTaskLogic = () => {
 
       return departmentMatch && priorityMatch && employeeMatch;
     });
-
-    setFilteredTasks(filtered);
-  };
+  }, [tasks, filters]);
 
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
-    filterTasks(newFilters);
   };
 
   const removeFilter = (category: keyof Filters, value: string) => {
     setFilters((prevFilters) => {
       const newFilters = { ...prevFilters };
-      newFilters[category] = newFilters[category].filter(
-        (item) => item !== value
-      );
-      filterTasks(newFilters);
+      newFilters[category] = newFilters[category].filter((item) => item !== value);
       return newFilters;
     });
   };
@@ -197,7 +72,6 @@ export const useTaskLogic = () => {
   };
 
   return {
-    tasks,
     filteredTasks,
     departments,
     priorities,
