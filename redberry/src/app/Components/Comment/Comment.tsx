@@ -1,5 +1,5 @@
 import styles from "./Comment.module.scss";
-import Image from "next/image";
+// import Image from "next/image";
 import Left from "../Left/Left";
 
 type Props = {
@@ -11,14 +11,13 @@ type Props = {
 };
 
 function Comment({ text, imageSrc, name, showLeft, onReplyClick }: Props) {
+  console.log(imageSrc);
   return (
     <div className={styles.container}>
       {imageSrc && (
-        <Image
+        <img
           className={styles.img}
           src={imageSrc}
-          width={38}
-          height={38}
           alt="comment image"
           placeholder="blur"
           blurDataURL="/default-avatar.jpg"
