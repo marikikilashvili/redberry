@@ -1,4 +1,3 @@
-// src/app/Components/Comment/Comment.tsx
 import styles from "./Comment.module.scss";
 import Image from "next/image";
 import Left from "../Left/Left";
@@ -8,7 +7,7 @@ type Props = {
   imageSrc?: string;
   name: string;
   showLeft?: boolean;
-  onReplyClick?: () => void; // Add this prop
+  onReplyClick?: () => void;
 };
 
 function Comment({ text, imageSrc, name, showLeft, onReplyClick }: Props) {
@@ -21,6 +20,8 @@ function Comment({ text, imageSrc, name, showLeft, onReplyClick }: Props) {
           width={38}
           height={38}
           alt="comment image"
+          placeholder="blur"
+          blurDataURL="/default-avatar.jpg"
         />
       )}
       <div className={styles.container2}>

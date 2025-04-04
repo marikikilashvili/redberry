@@ -59,8 +59,8 @@ export default function Home() {
                       date={task.due_date.split("T")[0]}
                       title={task.name}
                       description={task.description}
-                      imgSrc={task.employee.avatar || "/default-avatar.jpg"}
-                      comments={task.total_comments} // Changed from task.commentCount
+                      imgSrc={task.employee?.avatar || "/default-avatar.jpg"}
+                      comments={task.total_comments}
                       priority={task.priority.name}
                       department={
                         task.department?.name || "უცნობი დეპარტამენტი"

@@ -77,14 +77,39 @@
   margin-top: 99px;
   border-radius: 10px;
   border: 0.3px solid #ddd2ff;
+  padding-left: 45px;
 }
 .input {
+  margin-top: 20px;
+  display: flex;
+  width: 651px;
+  height: 90px;
+  margin-left: 20px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+
+  resize: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+.inputt {
   margin-top: 85px;
   display: flex;
   width: 651px;
-  height: 35px;
+  height: 90px;
   margin-left: 20px;
   border: none;
+  outline: none;
+  border-radius: 10px;
+
+  resize: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
 .button {
   margin-top: 85px;
@@ -94,7 +119,7 @@
   display: flex;
   width: 651px;
   height: 135px;
-  margin: 40 auto;
+  margin-top: 40px;
   border-radius: 10px;
   border: 0.3px solid #adb5bd;
 }
@@ -107,6 +132,11 @@
   font-weight: 500;
   font-size: 20px;
   line-height: 100%;
-  margin: 38px 45px;
+  margin: 38px 0px;
   letter-spacing: 0%;
+}
+.replyContainer {
+  display: flex;
+  align-items: center;
+  text-align: center;
 }
