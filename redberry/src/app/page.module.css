@@ -1,7 +1,35 @@
 .container {
   max-width: 1680px;
   margin: auto;
-  margin-top: 500px;
+}
+
+
+
+
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+}
+
+/* Content Wrapper */
+.contentWrapper {
+  transition: filter 0.3s ease;
+}
+
+.contentWrapper.blurred {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
 }
 
 .cardsContainer {

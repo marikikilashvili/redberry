@@ -1,12 +1,17 @@
 "use client";
-import React from "react";
 import styles from "./CreateTanamsh.module.scss";
-type Props = {
-  text: string;
-};
 
-const CreateTanamsh = ({ text }: Props) => {
-  return <button className={styles.button}>{text}</button>;
+interface Props {
+  text: string;
+  onClick?: () => void;
+}
+
+const CreateTanamsh = ({ text, onClick }: Props) => {
+  return (
+    <button className={styles.button} onClick={onClick}>
+      {text}
+    </button>
+  );
 };
 
 export default CreateTanamsh;

@@ -8,10 +8,12 @@ import {
 } from "react";
 
 interface Department {
+  id: number;
   name: string;
 }
 
 interface Priority {
+  id: number;
   name: string;
 }
 
@@ -21,9 +23,11 @@ interface Status {
 }
 
 interface Employee {
+  id: number;
   name: string;
   surname: string;
   avatar?: string;
+  department: Department;
 }
 
 interface Task {
@@ -40,11 +44,13 @@ interface Task {
 
 interface TaskContextType {
   tasks: Task[];
-  updateTask: (task: Task) => void; // Added for status updates
   departments: Department[];
   priorities: Priority[];
   statuses: Status[];
   employees: Employee[];
+  updateTask: (updatedTask: Task) => void;
+  refreshTasks: () => Promise<void>;
+  refreshEmployees: () => Promise<void>;
 }
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
@@ -56,76 +62,46 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const [statuses, setStatuses] = useState<Status[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (tasks.length > 0) return; // Skip if data is already fetched
-      try {
-        const taskResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/tasks",
-          {
+  const fetchAllData = async () => {
+    try {
+      const [tasksRes, deptsRes, prioritiesRes, statusesRes, employeesRes] =
+        await Promise.all([
+          fetch("https://momentum.redberryinternship.ge/api/tasks", {
             headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
             },
-          }
-        );
-        if (!taskResponse.ok) throw new Error("Fetch tasks failed");
-        const taskResult = await taskResponse.json();
-        setTasks(taskResult || []);
-
-        const deptResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/departments",
-          {
+          }),
+          fetch("https://momentum.redberryinternship.ge/api/departments", {
             headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
             },
-          }
-        );
-        if (!deptResponse.ok) throw new Error("Fetch departments failed");
-        const deptResult = await deptResponse.json();
-        setDepartments(deptResult || []);
-
-        const priorityResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/priorities",
-          {
+          }),
+          fetch("https://momentum.redberryinternship.ge/api/priorities", {
             headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
             },
-          }
-        );
-        if (!priorityResponse.ok) throw new Error("Fetch priorities failed");
-        const priorityResult = await priorityResponse.json();
-        setPriorities(priorityResult || []);
-
-        const statusResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/statuses",
-          {
+          }),
+          fetch("https://momentum.redberryinternship.ge/api/statuses", {
             headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
             },
-          }
-        );
-        if (!statusResponse.ok) throw new Error("Fetch statuses failed");
-        const statusResult = await statusResponse.json();
-        setStatuses(statusResult || []);
-
-        const employeeResponse = await fetch(
-          "https://momentum.redberryinternship.ge/api/employees",
-          {
+          }),
+          fetch("https://momentum.redberryinternship.ge/api/employees", {
             headers: {
-              Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
+              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
             },
-          }
-        );
-        if (!employeeResponse.ok) throw new Error("Fetch employees failed");
-        const employeeResult = await employeeResponse.json();
-        setEmployees(employeeResult || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+          }),
+        ]);
 
-    fetchData();
-  }, []);
+      setTasks(await tasksRes.json());
+      setDepartments(await deptsRes.json());
+      setPriorities(await prioritiesRes.json());
+      setStatuses(await statusesRes.json());
+      setEmployees(await employeesRes.json());
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
 
   const updateTask = (updatedTask: Task) => {
     setTasks((prevTasks) =>
@@ -133,15 +109,53 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
+  const refreshTasks = async () => {
+    try {
+      const response = await fetch(
+        "https://momentum.redberryinternship.ge/api/tasks",
+        {
+          headers: {
+            Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
+          },
+        }
+      );
+      setTasks(await response.json());
+    } catch (error) {
+      console.error("Failed to refresh tasks:", error);
+    }
+  };
+
+  const refreshEmployees = async () => {
+    try {
+      const response = await fetch(
+        "https://momentum.redberryinternship.ge/api/employees",
+        {
+          headers: {
+            Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
+          },
+        }
+      );
+      setEmployees(await response.json());
+    } catch (error) {
+      console.error("Failed to refresh employees:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllData();
+  }, []);
+
   return (
     <TaskContext.Provider
       value={{
         tasks,
-        updateTask,
         departments,
         priorities,
         statuses,
         employees,
+        updateTask,
+        refreshTasks,
+        refreshEmployees,
       }}
     >
       {children}
@@ -151,7 +165,8 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 
 export const useTaskContext = () => {
   const context = useContext(TaskContext);
-  if (!context)
+  if (!context) {
     throw new Error("useTaskContext must be used within a TaskProvider");
+  }
   return context;
 };

@@ -1,15 +1,15 @@
 "use client";
-import React from "react";
 import styles from "./CreateAccount.module.scss";
 import Image from "next/image";
 
-type Props = {
+interface Props {
   text: string;
-};
+  onClick?: () => void;
+}
 
-const CreateAccount = ({ text }: Props) => {
+const CreateAccount = ({ text, onClick }: Props) => {
   return (
-    <div className={styles.button}>
+    <div className={styles.button} onClick={onClick}>
       <Image src="/add.svg" width={20} height={20} alt="Add icon" />
       <p>{text}</p>
     </div>

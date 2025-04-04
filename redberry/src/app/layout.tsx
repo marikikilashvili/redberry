@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { TaskProvider } from "./TaskContext";
 import Header from "./Components/Header/Header";
-import { TaskProvider } from "../app/TaskContext"; // Adjusted to point to src/app/TaskContext.tsx
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TaskProvider>
-          <Header />
+          {/* <Header /> */}
           {children}
         </TaskProvider>
       </body>

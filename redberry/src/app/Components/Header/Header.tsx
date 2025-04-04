@@ -1,9 +1,16 @@
+// Header.tsx
+"use client";
 import styles from "./Header.module.scss";
 import Image from "next/image";
 import CreateTanamsh from "../CreateTanamsh/CreateTanamsh";
 import CreateAccount from "../CreateAccount/CreateAccount";
 
-const Header = () => {
+interface HeaderProps {
+  onAddEmployee: () => void;
+  onAddTask: () => void; // Add this for the second button
+}
+
+const Header = ({ onAddEmployee, onAddTask }: HeaderProps) => {
   return (
     <div className={styles.container}>
       <div>
@@ -12,11 +19,15 @@ const Header = () => {
           width={210}
           height={38}
           alt="header image"
-        ></Image>
+          priority // Add priority if it's above the fold
+        />
       </div>
       <div className={styles.buttons}>
-        <CreateTanamsh text="თანამშრომლის შექმნა" />
-        <CreateAccount text="შექმენი ახალი დავალება" />
+        <CreateTanamsh text="თანამშრომლის შექმნა" onClick={onAddEmployee} />
+        <CreateAccount
+          text="შექმენი ახალი დავალება"
+          onClick={onAddTask} // Use the new prop here
+        />
       </div>
     </div>
   );
