@@ -1,0 +1,47 @@
+.container {
+  width: 913px;
+  height: 766px;
+  margin-top: 118px;
+
+  border-radius: 10px;
+  padding-top: 40px;
+  padding-right: 50px;
+  padding-bottom: 60px;
+  padding-left: 50px;
+  border: 1px solid black;
+  margin: auto;
+  position: relative;
+}
+
+.saxeligvari {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.photo {
+  margin-top: 45px;
+}
+.h2 {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #212529;
+  padding-top: 77px;
+  padding-bottom: 45px;
+}
+.Department {
+  margin-top: 45px;
+}
+.cancel {
+  position: absolute;
+  right: 50px;
+  top: 40px;
+}
+.buttons {
+  display: flex;
+  margin-top: 100px;
+  gap: 22px;
+  margin-left: 426px;
+}

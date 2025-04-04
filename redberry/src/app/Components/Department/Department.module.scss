@@ -1,8 +1,8 @@
 @import "../../color.scss";
 
 .container {
-  width: 550px;
-  height: 45px;
+  width: 384px;
+  height: 42px;
 }
 
 .container1 {
@@ -26,8 +26,8 @@
 }
 
 .selectedOption {
-  width: 550px;
-  height: 45px;
+  width: 384px;
+  height: 42px;
   display: flex;
   align-items: center;
   position: relative;
@@ -63,7 +63,8 @@
 }
 
 .dropdown {
-  width: 550px;
+  width: 384px;
+
   display: block;
   background-color: $white;
   border: none;
@@ -80,7 +81,7 @@
 }
 
 .optionItem {
-  height: 45px;
+  height: 42px;
   align-items: center;
   padding: 8px 14px;
   font-weight: 300;

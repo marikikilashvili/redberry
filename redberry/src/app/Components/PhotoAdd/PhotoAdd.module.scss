@@ -1,0 +1,27 @@
+.container {
+  width: 813px;
+  height: 120px;
+  border-radius: 8px;
+  border: 1px dashed #ced4da;
+}
+.galerea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px auto;
+}
+.p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #343a40;
+}
+.h2 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  padding-bottom: 8px;
+}

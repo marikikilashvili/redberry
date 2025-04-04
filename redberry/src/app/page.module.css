@@ -1,6 +1,7 @@
 .container {
   max-width: 1680px;
   margin: auto;
+  margin-top: 500px;
 }
 
 .cardsContainer {
@@ -27,23 +28,23 @@
 }
 
 .yellow {
-  background-color: #FFF5D9; /* Light yellow */
-  color: #E89C31; /* Darker yellow text */
+  background-color: #fff5d9; /* Light yellow */
+  color: #e89c31; /* Darker yellow text */
 }
 
 .orange {
-  background-color: #FFE8D9; 
-  color: #FD7A07;
+  background-color: #ffe8d9;
+  color: #fd7a07;
 }
 
 .pink {
-  background-color: #FFEDF7; 
-  color: #E62E7B; 
+  background-color: #ffedf7;
+  color: #e62e7b;
 }
 
 .blue {
-  background-color: #E7F1FE; 
-  color: #0066FF; 
+  background-color: #e7f1fe;
+  color: #0066ff;
 }
 
 .h1 {
