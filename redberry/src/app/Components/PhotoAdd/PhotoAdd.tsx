@@ -35,7 +35,13 @@ const PhotoAdd = ({ preview, onFileSelect, fileInputRef }: PhotoAddProps) => {
             <img src={preview} alt="Preview" className={styles.preview} />
           ) : (
             <>
-              <Image src="/photo.svg" width={34} height={28} alt="upload" />
+              <Image
+                className={styles.photo}
+                src="/photo.svg"
+                width={34}
+                height={28}
+                alt="upload"
+              />
               <p className={styles.p}>ატვირთე ფოტო</p>
             </>
           )}
@@ -46,3 +52,4 @@ const PhotoAdd = ({ preview, onFileSelect, fileInputRef }: PhotoAddProps) => {
 };
 
 export default PhotoAdd;
+
