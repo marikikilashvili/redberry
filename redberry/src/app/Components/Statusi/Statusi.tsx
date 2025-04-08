@@ -38,7 +38,7 @@ export default function Statusi({ initialStatus, onStatusChange }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.container1}>
-        {/* <h2 className={styles.title}>სტატუსი*</h2> */}
+        <h2 className={styles.title}>სტატუსი*</h2>
         <div className={styles.dropdownWrapper}>
           <div className={styles.selectedOption}>
             <span className={styles.selectedText}>{selectedOption}</span>

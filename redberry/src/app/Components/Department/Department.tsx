@@ -1,29 +1,22 @@
-
-// Department.tsx
 "use client";
 import styles from "./Department.module.scss";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface Department {
   id: number;
   name: string;
 }
 
-const Department = ({ onSelect }: { onSelect: (id: number) => void }) => {
-  const [departments, setDepartments] = useState<Department[]>([]);
+const Department = ({
+  onSelectDepartment,
+  departments,
+}: {
+  onSelectDepartment: (id: string) => void;
+  departments: Department[];
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("");
-
-  useEffect(() => {
-    fetch("https://momentum.redberryinternship.ge/api/departments", {
-      headers: {
-        Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setDepartments(data));
-  }, []);
 
   return (
     <div className={styles.container}>
@@ -47,7 +40,7 @@ const Department = ({ onSelect }: { onSelect: (id: number) => void }) => {
                 className={styles.option}
                 onClick={() => {
                   setSelected(dept.name);
-                  onSelect(dept.id);
+                  onSelectDepartment(dept.id.toString()); // Changed from onSelect to onSelectDepartment
                   setIsOpen(false);
                 }}
               >

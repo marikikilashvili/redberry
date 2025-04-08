@@ -10,17 +10,17 @@ import CreateTanamsh from "../CreateTanamsh/CreateTanamsh";
 import Image from "next/image";
 
 interface AddFormProps {
-  onClose: () => void; // Ensure parent passes this as function
+  onClose: () => void;
 }
 
 const AddForm = ({ onClose }: AddFormProps) => {
-  const { refreshEmployees } = useTaskContext();
+  const { departments, refreshEmployees } = useTaskContext();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [departmentId, setDepartmentId] = useState<number | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null); // Correct ref type
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (file: File) => {
     const reader = new FileReader();
@@ -30,7 +30,7 @@ const AddForm = ({ onClose }: AddFormProps) => {
   };
 
   const handleSubmit = async () => {
-    if (!name || !surname || !departmentId || !avatarFile) {
+    if (!name || !surname || departmentId === null || !avatarFile) {
       alert("Please fill all required fields");
       return;
     }
@@ -55,7 +55,7 @@ const AddForm = ({ onClose }: AddFormProps) => {
 
       if (response.ok) {
         await refreshEmployees();
-        onClose(); // Now properly typed
+        onClose();
       } else {
         const error = await response.json();
         throw new Error(error.message || "Failed to create employee");
@@ -89,14 +89,19 @@ const AddForm = ({ onClose }: AddFormProps) => {
         </div>
 
         <div className={styles.Department}>
-          <Department onSelect={setDepartmentId} />
+          <Department
+            onSelectDepartment={(id: string) =>
+              setDepartmentId(parseInt(id, 10))
+            }
+            departments={departments}
+          />
         </div>
 
         <div className={styles.buttons}>
           <CreateTanamsh text="გაუქმება" onClick={onClose} />
           <CreateAccount text="დაამატე თანამშრომელი" onClick={handleSubmit} />
         </div>
-      </div>{" "}
+      </div>
     </div>
   );
 };

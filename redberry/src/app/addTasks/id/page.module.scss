@@ -1,0 +1,82 @@
+.box {
+  display: flex;
+  gap: 160px;
+  width: 1684;
+  min-height: 958;
+  top: 206px;
+  left: 118px;
+  border-radius: 4px;
+  border: 0.3px solid rgba(221, 210, 255, 1);
+  background-color: rgba(251, 249, 255, 0.65);
+  margin-inline: auto;
+  padding: 65px 55px;
+  margin-bottom: 535px;
+}
+.main {
+  margin-top: 40px;
+  margin-bottom: 25px;
+  color: black;
+  font-family: FiraGO;
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  padding-left: 120px;
+}
+.left {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 55px;
+}
+.drops {
+  display: flex;
+  width: inherit;
+  justify-content: space-between;
+  //   align-items: center;
+}
+.right {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+}
+.department {
+  margin-bottom: 93px;
+}
+.employee {
+  margin-bottom: 167px;
+}
+.create {
+  color: white;
+  align-self: flex-end;
+  margin-top: 147px;
+  width: 208;
+  height: 42;
+  border-radius: 5px;
+  gap: 4px;
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  background-color: rgba(131, 56, 236, 1);
+  border: none;
+  font-family: FiraGO;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.employee {
+  z-index: 2;
+}
+.department {
+  z-index: 10;
+}
+.Description {
+  width: 550px;
+  height: 133px;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 14px;
+}

@@ -4,12 +4,13 @@ import Header from "./Components/Header/Header";
 import Choices3 from "./Components/Choices3/Choices3";
 import Cards from "./Components/Cards/Cards";
 import Filter from "./Components/Filter/Filter";
-import styles from "./page.module.css";
+import styles from "./page.module.css"; // Adjust path if needed
 import cardStyles from "./Components/Cards/Cards.module.scss";
-import { useTaskLogic } from "./useTascLogic";
+import { useTaskLogic } from "./useTascLogic"; // Your custom hook for task logic
 import AddForm from "./Components/AddForm/AddForm";
 
 export default function Home() {
+  // Fetch task-related data using your custom hook
   const {
     filteredTasks,
     departments,
@@ -22,31 +23,33 @@ export default function Home() {
     getColorClass,
   } = useTaskLogic();
 
+  // State for showing the employee creation form
   const [showEmployeeForm, setShowEmployeeForm] = useState(false);
-  const [showTaskForm, setShowTaskForm] = useState(false);
 
   return (
     <>
-      {/* Render forms first */}
+      {/* Employee creation form (modal) */}
       {showEmployeeForm && (
         <AddForm onClose={() => setShowEmployeeForm(false)} />
       )}
-      {showTaskForm && <TaskForm onClose={() => setShowTaskForm(false)} />}
 
-      {/* Wrap both header and content in the blur container */}
+      {/* Main content with blur effect when form is open */}
       <div
         className={`${styles.contentWrapper} ${
-          showEmployeeForm || showTaskForm ? styles.blurred : ""
+          showEmployeeForm ? styles.blurred : ""
         }`}
       >
+        {/* Header with navigation to employee and task creation */}
         <Header
           onAddEmployee={() => setShowEmployeeForm(true)}
-          onAddTask={() => setShowTaskForm(true)}
+          onAddTask={() => {}} // Handled internally in Header
         />
 
+        {/* Main content container */}
         <div className={styles.container}>
           <h1 className={styles.h1}>დავალებების გვერდი</h1>
 
+          {/* Filter dropdowns */}
           <div className={styles.Choices3}>
             <Choices3
               departments={departments}
@@ -56,9 +59,13 @@ export default function Home() {
               onFilterChange={handleFilterChange}
             />
           </div>
+
+          {/* Active filters display */}
           <div>
             <Filter filters={filters} onRemoveFilter={removeFilter} />
           </div>
+
+          {/* Task columns by status */}
           <div className={styles.cardsContainer}>
             {statuses.length > 0 ? (
               statuses.map((status) => {

@@ -49,6 +49,7 @@ interface TaskContextType {
   statuses: Status[];
   employees: Employee[];
   updateTask: (updatedTask: Task) => void;
+  createTask: (taskData: Partial<Task>) => Promise<void>;
   refreshTasks: () => Promise<void>;
   refreshEmployees: () => Promise<void>;
 }
@@ -66,32 +67,18 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
     try {
       const [tasksRes, deptsRes, prioritiesRes, statusesRes, employeesRes] =
         await Promise.all([
-          fetch("https://momentum.redberryinternship.ge/api/tasks", {
-            headers: {
-              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
-            },
-          }),
-          fetch("https://momentum.redberryinternship.ge/api/departments", {
-            headers: {
-              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
-            },
-          }),
-          fetch("https://momentum.redberryinternship.ge/api/priorities", {
-            headers: {
-              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
-            },
-          }),
-          fetch("https://momentum.redberryinternship.ge/api/statuses", {
-            headers: {
-              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
-            },
-          }),
-          fetch("https://momentum.redberryinternship.ge/api/employees", {
-            headers: {
-              Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
-            },
-          }),
+          fetch("/api/tasks"),
+          fetch("/api/departments"),
+          fetch("/api/priorities"),
+          fetch("/api/statuses"),
+          fetch("/api/employees"),
         ]);
+
+      if (!tasksRes.ok) throw new Error("Failed to fetch tasks");
+      if (!deptsRes.ok) throw new Error("Failed to fetch departments");
+      if (!prioritiesRes.ok) throw new Error("Failed to fetch priorities");
+      if (!statusesRes.ok) throw new Error("Failed to fetch statuses");
+      if (!employeesRes.ok) throw new Error("Failed to fetch employees");
 
       setTasks(await tasksRes.json());
       setDepartments(await deptsRes.json());
@@ -103,6 +90,31 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const createTask = async (taskData: Partial<Task>) => {
+    try {
+      const response = await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(taskData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Failed to create task: ${response.status} - ${errorText}`
+        );
+      }
+
+      const newTask = await response.json();
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+    } catch (error) {
+      console.error("Failed to create task:", error);
+      throw error;
+    }
+  };
+
   const updateTask = (updatedTask: Task) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
@@ -111,14 +123,8 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshTasks = async () => {
     try {
-      const response = await fetch(
-        "https://momentum.redberryinternship.ge/api/tasks",
-        {
-          headers: {
-            Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
-          },
-        }
-      );
+      const response = await fetch("/api/tasks");
+      if (!response.ok) throw new Error("Failed to fetch tasks");
       setTasks(await response.json());
     } catch (error) {
       console.error("Failed to refresh tasks:", error);
@@ -127,14 +133,8 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshEmployees = async () => {
     try {
-      const response = await fetch(
-        "https://momentum.redberryinternship.ge/api/employees",
-        {
-          headers: {
-            Authorization: "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d",
-          },
-        }
-      );
+      const response = await fetch("/api/employees");
+      if (!response.ok) throw new Error("Failed to fetch employees");
       setEmployees(await response.json());
     } catch (error) {
       console.error("Failed to refresh employees:", error);
@@ -154,6 +154,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
         statuses,
         employees,
         updateTask,
+        createTask,
         refreshTasks,
         refreshEmployees,
       }}
