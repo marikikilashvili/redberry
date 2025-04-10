@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./DatePicker.module.css";
+import styles from "./DatePicker.module.scss";
 
 interface DatePickerCalendarProps {
   selectedDate: Date | null;

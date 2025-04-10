@@ -1,24 +1,33 @@
 @import "../../color.scss";
+
 .container {
   display: flex;
   flex-direction: column;
   background-color: $white;
-  width: 688px;
-  // height: 274px;
-  gap: 22px;
-  padding-top: 40px;
-  padding-left: 30px;
+  width: 687px;
   border-radius: 10px;
   border: 0.5px solid $primaryColor;
   position: relative;
-  padding-bottom: 80px;
+  max-height: 500px;
+  box-sizing: border-box;
+  padding: 40px 0 80px 31px;
+  z-index: 999999;
 }
-.p {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 100%;
-  letter-spacing: 0%;
+
+.scrollableContent {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+
+  max-height: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: calc(100% - 31px);
+  margin-right: 30px;
 }
+
 .button {
   position: absolute;
   bottom: 20px;

@@ -4,13 +4,15 @@ import { useParams } from "next/navigation";
 import { useTaskContext } from "../../TaskContext";
 import styles from "./page.module.scss";
 import Image from "next/image";
+import globalStyles from "../../page.module.css"; // Add this import
 import SixButtons from "@/app/Components/SixButtons/SixButtons";
 import Statusi from "@/app/Components/Statusi/Statusi";
 import ColouredButton from "@/app/Components/ColouredButton/ColouredButton";
 import Tanamshromeli from "@/app/Components/Tanamshromeli/Tanamshromeli";
 import CustomButton from "@/app/Components/CustomButton/CustomButton";
 import Comment from "@/app/Components/Comment/Comment";
-
+import Header from "@/app/Components/Header/Header"; // Add this import
+import AddForm from "@/app/Components/AddForm/AddForm"; // Add this import
 interface Task {
   id: number;
   name: string;
@@ -19,7 +21,7 @@ interface Task {
   status: { id: number; name: string };
   priority: { name: string };
   department: { name: string };
-  employee: { name: string; surname: string; avatar?: string };
+  employee: { name: string; surname: string; avatar?: string | null };
   total_comments: number;
 }
 
@@ -27,7 +29,7 @@ interface CommentData {
   id: number;
   text: string;
   author_nickname: string;
-  author_avatar?: string;
+  author_avatar?: string | null;
   parent_id?: number | null;
 }
 
@@ -39,6 +41,7 @@ export default function TaskPage() {
   const [commentText, setCommentText] = useState("");
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
   const [replyText, setReplyText] = useState("");
+  const [showEmployeeForm, setShowEmployeeForm] = useState(false);
 
   const fetchTask = async () => {
     try {
@@ -53,6 +56,7 @@ export default function TaskPage() {
       );
       if (!taskResponse.ok) throw new Error("Failed to fetch task");
       const taskData = await taskResponse.json();
+      console.log("Fetched task data:", taskData);
       setTask(taskData);
     } catch (error) {
       console.error("Error fetching task:", error);
@@ -80,7 +84,7 @@ export default function TaskPage() {
           const avatarUrl = c.author_avatar
             ? c.author_avatar.startsWith("http")
               ? c.author_avatar
-              : `https://momentum.redberryinternship.ge/storage${c.author_avatar}`
+              : `https://momentum.redberryinternship.ge/storage/employee-avatars/74FUyZqjtcKSZ130DTcl81jaSaOdsXeN1Ryew8aq.jpg`
             : null;
 
           flat.push({
@@ -214,112 +218,138 @@ export default function TaskPage() {
     );
   }
 
-  const avatarSrc = task.employee.avatar?.startsWith("http")
-    ? task.employee.avatar
-    : task.employee.avatar
-    ? `https://momentum.redberryinternship.ge/storage${task.employee.avatar}`
-    : "/default-avatar.jpg";
+  // Corrected avatar source logic
+  const avatarSrc =
+    task.employee.avatar && typeof task.employee.avatar === "string"
+      ? task.employee.avatar.startsWith("http")
+        ? task.employee.avatar
+        : `https://momentum.redberryinternship.ge/storage/employee-avatars/74FUyZqjtcKSZ130DTcl81jaSaOdsXeN1Ryew8aq.jpg`
+      : "/default-avatar.jpg";
+
+  console.log("Computed avatarSrc:", avatarSrc);
 
   return (
-    <div className={styles.container}>
-      <div>
-        <div className={styles.buttons}>
-          <SixButtons
-            priority={
-              task.priority.name ? mapPriorityToIcon(task.priority.name) : "low"
-            }
-            size="small"
-          />
-          <ColouredButton department={task.department.name} />
-        </div>
-        <h1 className={styles.h1}>Task Details: {task.name}</h1>
-        <h2 className={styles.h2}>{task.description}</h2>
-        <h4 className={styles.h4}>დავალების დეტალები</h4>
-        <div className={styles.cards}>
-          <div className={styles.cardzs}>
-            <div className={styles.cardz}>
-              <Image src="/pie-chart.svg" width={24} height={24} alt="chart" />
-              <p className={styles.p}>სტატუსი</p>
-            </div>
-            <Statusi
-              initialStatus={task.status.name}
-              onStatusChange={handleStatusChange}
-            />
-          </div>
-          <div className={styles.cardzs}>
-            <div className={styles.cardz}>
-              <Image src="/user.svg" width={24} height={24} alt="user" />
-              <p className={styles.p}>თანამშრომელი</p>
-            </div>
-            <Tanamshromeli
-              text={`${task.employee.name} ${task.employee.surname}`}
-              imageSrc={avatarSrc}
-            />
-          </div>
-          <div className={styles.cardzs}>
-            <div className={styles.cardz}>
-              <Image
-                src="/calendar.svg"
-                width={24}
-                height={24}
-                alt="calendar"
+    <>
+      {showEmployeeForm && (
+        <AddForm onClose={() => setShowEmployeeForm(false)} />
+      )}
+      <div
+        className={`${globalStyles.contentWrapper} ${
+          showEmployeeForm ? globalStyles.blurred : ""
+        }`}
+      >
+        <Header
+          onAddEmployee={() => setShowEmployeeForm(true)}
+          onAddTask={() => {}}
+        />
+        <div className={styles.container}>
+          <div>
+            <div className={styles.buttons}>
+              <SixButtons
+                priority={
+                  task.priority.name
+                    ? mapPriorityToIcon(task.priority.name)
+                    : "low"
+                }
+                size="small"
               />
-              <p className={styles.p}>დავალების ვადა</p>
+              <ColouredButton department={task.department.name} />
             </div>
-            <p className={styles.date}>{task.due_date.split("T")[0]}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.messages}>
-        <div className={styles.relative}>
-          <textarea
-            className={styles.input}
-            placeholder="type text"
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-          />
-          <div className={styles.button}>
-            <CustomButton text="დააკომენტარე" onClick={handleAddComment} />
-          </div>
-        </div>
-        <p className={styles.title}>კომენტარები</p>
-        {comments.length > 0 ? (
-          comments.map((comment) => (
-            <div
-              key={comment.id}
-              className={styles.message}
-              style={{ marginLeft: comment.parent_id ? "20px" : "0" }}
-            >
-              <Comment
-                name={comment.author_nickname}
-                imageSrc={comment.author_avatar || "/default-avatar.jpg"}
-                text={comment.text}
-                showLeft={comment.parent_id == null}
-                onReplyClick={() => setReplyingTo(comment.id)}
-              />
-              {replyingTo === comment.id && (
-                <div className={styles.relative}>
-                  <textarea
-                    className={styles.input}
-                    placeholder="Type your reply"
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
+            <h1 className={styles.h1}>Task Details: {task.name}</h1>
+            <h2 className={styles.h2}>{task.description}</h2>
+            <h4 className={styles.h4}>დავალების დეტალები</h4>
+            <div className={styles.cards}>
+              <div className={styles.cardzs}>
+                <div className={styles.cardz}>
+                  <Image
+                    src="/pie-chart.svg"
+                    width={24}
+                    height={24}
+                    alt="chart"
                   />
-                  <div className={styles.button}>
-                    <CustomButton
-                      text="დააკომენტარე"
-                      onClick={() => handleReplySubmit(comment.id)}
-                    />
-                  </div>
+                  <p className={styles.p}>სტატუსი</p>
                 </div>
-              )}
+                <Statusi
+                  initialStatus={task.status.name}
+                  onStatusChange={handleStatusChange}
+                />
+              </div>
+              <div className={styles.cardzs}>
+                <div className={styles.cardz}>
+                  <Image src="/user.svg" width={24} height={24} alt="user" />
+                  <p className={styles.p}>თანამშრომელი</p>
+                </div>
+                <Tanamshromeli
+                  text={`${task.employee.name} ${task.employee.surname}`}
+                  imageSrc={avatarSrc}
+                />
+              </div>
+              <div className={styles.cardzs}>
+                <div className={styles.cardz}>
+                  <Image
+                    src="/calendar.svg"
+                    width={24}
+                    height={24}
+                    alt="calendar"
+                  />
+                  <p className={styles.p}>დავალების ვადა</p>
+                </div>
+                <p className={styles.date}>{task.due_date.split("T")[0]}</p>
+              </div>
             </div>
-          ))
-        ) : (
-          <p>კომენტარები არ არის</p>
-        )}
+          </div>
+
+          <div className={styles.messages}>
+            <div className={styles.relative}>
+              <textarea
+                className={styles.input}
+                placeholder="type text"
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+              />
+              <div className={styles.button}>
+                <CustomButton text="დააკომენტარე" onClick={handleAddComment} />
+              </div>
+            </div>
+            <p className={styles.title}>კომენტარები</p>
+            {comments.length > 0 ? (
+              comments.map((comment) => (
+                <div
+                  key={comment.id}
+                  className={styles.message}
+                  style={{ marginLeft: comment.parent_id ? "20px" : "0" }}
+                >
+                  <Comment
+                    name={comment.author_nickname}
+                    imageSrc={comment.author_avatar || "/default-avatar.jpg"}
+                    text={comment.text}
+                    showLeft={comment.parent_id == null}
+                    onReplyClick={() => setReplyingTo(comment.id)}
+                  />
+                  {replyingTo === comment.id && (
+                    <div className={styles.relative}>
+                      <textarea
+                        className={styles.input}
+                        placeholder="Type your reply"
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                      />
+                      <div className={styles.button}>
+                        <CustomButton
+                          text="დააკომენტარე"
+                          onClick={() => handleReplySubmit(comment.id)}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p>კომენტარები არ არის</p>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

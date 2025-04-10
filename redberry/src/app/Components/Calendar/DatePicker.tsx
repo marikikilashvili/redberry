@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import styles from "./DataPicker.module.css";
+import styles from "./DatePicker.module.scss";
 import { DatePickerInput } from "./DatePickerInput";
 import { DatePickerCalendar } from "./DatePickerCalendar";
 

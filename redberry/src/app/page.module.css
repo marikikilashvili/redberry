@@ -1,10 +1,11 @@
 .container {
-  max-width: 1680px;
+  max-width: 1682px;
   margin: auto;
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  overflow: hidden; /* Prevent page-level scrolling */
 }
-
-
-
 
 /* Modal Overlay */
 .modalOverlay {
@@ -24,6 +25,8 @@
 /* Content Wrapper */
 .contentWrapper {
   transition: filter 0.3s ease;
+  height: 100vh; /* Match viewport height */
+  overflow: hidden; /* Prevent scrolling here too */
 }
 
 .contentWrapper.blurred {
@@ -35,14 +38,34 @@
 .cardsContainer {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Four equal columns */
-  gap: 52px; /* Your original gap */
+  gap: 52px; /* Space between columns */
   padding-top: 24px;
+  height: calc(100vh - 250px); /* Adjust based on top content height */
+  overflow-y: auto; /* Internal vertical scrolling */
+  overflow-x: hidden; /* No horizontal scrolling */
+  width: 100%; /* Fit parent container */
+  box-sizing: border-box;
+  -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+/* Hide scrollbar in Webkit browsers (Chrome, Safari) */
+.cardsContainer::-webkit-scrollbar {
+  display: none; /* Completely hide the scrollbar */
 }
 
 .column {
   display: flex;
   flex-direction: column; /* Stack cards vertically */
-  gap: 10px; /* Space between cards in a column */
+  gap: 10px; /* Space between cards */
+  width: 100%; /* Fit within grid cells */
+  box-sizing: border-box;
+  margin-bottom: 50px;
+}
+
+/* Add margin-bottom to the last child in each column */
+.column > *:last-child {
+  margin-bottom: 50px; /* 50px space at the bottom of each column */
 }
 
 .statusButton {
@@ -53,11 +76,13 @@
   font-weight: 500;
   margin-bottom: 10px;
   cursor: pointer;
+  width: 100%; /* Fit column width */
+  box-sizing: border-box;
 }
 
 .yellow {
-  background-color: #fff5d9; /* Light yellow */
-  color: #e89c31; /* Darker yellow text */
+  background-color: #fff5d9;
+  color: #e89c31;
 }
 
 .orange {
@@ -82,8 +107,13 @@
   letter-spacing: 0%;
   padding-top: 40px;
   padding-bottom: 52px;
+  margin: 0; /* Remove default margin */
 }
 
 .Choices3 {
   padding-bottom: 25px;
+}
+
+.topSection {
+  flex-shrink: 0; /* Prevent it from shrinking */
 }

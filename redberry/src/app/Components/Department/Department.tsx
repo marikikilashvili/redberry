@@ -22,8 +22,13 @@ const Department = ({
     <div className={styles.container}>
       <h2 className={styles.title}>დეპარტამენტი*</h2>
       <div className={styles.dropdownWrapper}>
-        <div className={styles.selected} onClick={() => setIsOpen(!isOpen)}>
-          <span>{selected || "აირჩიეთ დეპარტამენტი"}</span>
+        <div
+          className={`${styles.selected} ${isOpen ? styles.open : ""}`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span className={styles.selectedText}>
+            {selected || "აირჩიეთ დეპარტამენტი"}
+          </span>
           <Image
             src="/down.svg"
             width={14}
@@ -40,7 +45,7 @@ const Department = ({
                 className={styles.option}
                 onClick={() => {
                   setSelected(dept.name);
-                  onSelectDepartment(dept.id.toString()); // Changed from onSelect to onSelectDepartment
+                  onSelectDepartment(dept.id.toString());
                   setIsOpen(false);
                 }}
               >

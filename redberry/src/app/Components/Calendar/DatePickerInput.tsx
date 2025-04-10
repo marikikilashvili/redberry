@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./DatePicker.module.css";
+import styles from "./DatePicker.module.scss";
 
 interface DatePickerInputProps {
   value: Date | null;

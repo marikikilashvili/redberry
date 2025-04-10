@@ -88,7 +88,7 @@ const EmployeesDropdown = ({
               >
                 <img
                   className={styles.avatar}
-                  src={employee.avatar || "/images/default-avatar.png"}
+                  src={employee.avatar || "user.svg"}
                   alt={`${employee.name} ${employee.surname}`}
                 />
                 <p>
