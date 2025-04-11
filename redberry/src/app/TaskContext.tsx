@@ -56,6 +56,8 @@ interface TaskContextType {
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
+const BEARER_TOKEN = "Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d";
+
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
@@ -65,26 +67,41 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchAllData = async () => {
     try {
-      const [tasksRes, deptsRes, prioritiesRes, statusesRes, employeesRes] =
-        await Promise.all([
-          fetch("/api/tasks"),
-          fetch("/api/departments"),
-          fetch("/api/priorities"),
-          fetch("/api/statuses"),
-          fetch("/api/employees"),
-        ]);
+      const headers = {
+        Authorization: BEARER_TOKEN,
+        "Content-Type": "application/json",
+      };
 
-      if (!tasksRes.ok) throw new Error("Failed to fetch tasks");
-      if (!deptsRes.ok) throw new Error("Failed to fetch departments");
-      if (!prioritiesRes.ok) throw new Error("Failed to fetch priorities");
-      if (!statusesRes.ok) throw new Error("Failed to fetch statuses");
-      if (!employeesRes.ok) throw new Error("Failed to fetch employees");
+      // Helper function to fetch and check response
+      const fetchAndCheck = async (url: string, name: string) => {
+        const res = await fetch(url, { headers });
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(
+            `Failed to fetch ${name}: ${res.status} - ${errorText}`
+          );
+        }
+        return res.json();
+      };
 
-      setTasks(await tasksRes.json());
-      setDepartments(await deptsRes.json());
-      setPriorities(await prioritiesRes.json());
-      setStatuses(await statusesRes.json());
-      setEmployees(await employeesRes.json());
+      // Fetch data sequentially to identify the failing request
+      const tasksData = await fetchAndCheck("/api/tasks", "tasks");
+      setTasks(tasksData);
+
+      const deptsData = await fetchAndCheck("/api/departments", "departments");
+      setDepartments(deptsData);
+
+      const prioritiesData = await fetchAndCheck(
+        "/api/priorities",
+        "priorities"
+      );
+      setPriorities(prioritiesData);
+
+      const statusesData = await fetchAndCheck("/api/statuses", "statuses");
+      setStatuses(statusesData);
+
+      const employeesData = await fetchAndCheck("/api/employees", "employees");
+      setEmployees(employeesData);
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
@@ -95,6 +112,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       const response = await fetch("/api/tasks", {
         method: "POST",
         headers: {
+          Authorization: BEARER_TOKEN,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(taskData),
@@ -123,7 +141,12 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshTasks = async () => {
     try {
-      const response = await fetch("/api/tasks");
+      const response = await fetch("/api/tasks", {
+        headers: {
+          Authorization: BEARER_TOKEN,
+          "Content-Type": "application/json",
+        },
+      });
       if (!response.ok) throw new Error("Failed to fetch tasks");
       setTasks(await response.json());
     } catch (error) {
@@ -133,7 +156,12 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshEmployees = async () => {
     try {
-      const response = await fetch("/api/employees");
+      const response = await fetch("/api/employees", {
+        headers: {
+          Authorization: BEARER_TOKEN,
+          "Content-Type": "application/json",
+        },
+      });
       if (!response.ok) throw new Error("Failed to fetch employees");
       setEmployees(await response.json());
     } catch (error) {

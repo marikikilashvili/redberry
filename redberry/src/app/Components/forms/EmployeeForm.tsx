@@ -3,15 +3,16 @@
 import { Formik, Form } from "formik";
 import Saxeli from "./Saxeli";
 import { employeeSchema } from "../../../../src/lib/validationSchemas";
-// import styles from React
+import styles from "./EmployeeForm.module.css";
+interface FormValues {
+  name: string;
+  surname: string;
+  department: string;
+}
 
 interface EmployeeFormProps {
-  onSubmit: (values: any) => void;
-  initialValues?: {
-    name: string;
-    surname: string;
-    department: string;
-  };
+  onSubmit: (values: FormValues) => void;
+  initialValues?: FormValues;
 }
 
 const EmployeeForm = ({
@@ -28,8 +29,6 @@ const EmployeeForm = ({
         <Form className={styles.formContainer}>
           <Saxeli label="სახელი" name="name" />
           <Saxeli label="გვარი" name="surname" />
-
-          {/* Add other fields like department select */}
 
           <div className={styles.formActions}>
             <button

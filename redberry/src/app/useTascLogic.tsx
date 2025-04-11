@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useTaskContext } from "./TaskContext"; // Adjust path
+import { useTaskContext } from "./TaskContext";
 
 interface Filters {
   departments: string[];
@@ -8,7 +8,8 @@ interface Filters {
 }
 
 export const useTaskLogic = () => {
-  const { tasks, departments, priorities, statuses, employees } = useTaskContext();
+  const { tasks, departments, priorities, statuses, employees } =
+    useTaskContext();
   const [filters, setFilters] = useState<Filters>({
     departments: [],
     priorities: [],
@@ -51,7 +52,9 @@ export const useTaskLogic = () => {
   const removeFilter = (category: keyof Filters, value: string) => {
     setFilters((prevFilters) => {
       const newFilters = { ...prevFilters };
-      newFilters[category] = newFilters[category].filter((item) => item !== value);
+      newFilters[category] = newFilters[category].filter(
+        (item) => item !== value
+      );
       return newFilters;
     });
   };

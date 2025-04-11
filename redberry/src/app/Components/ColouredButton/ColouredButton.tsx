@@ -43,6 +43,8 @@ const getShortenedDepartment = (department: string): string => {
   switch (normalizedDepartment) {
     case "დიზაინერების დეპარტამენტი":
       return "დიზაინი";
+    case "გაყიდვები და მარკეტინგის დეპარტამენტი":
+      return "გაყიდვები";
     case "მარკეტინგი":
       return "მარკეტინგი";
     case "ლოჯოსტიკის დეპარტამენტი":

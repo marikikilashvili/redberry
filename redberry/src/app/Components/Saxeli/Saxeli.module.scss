@@ -12,7 +12,13 @@
   display: flex;
   align-items: center;
 }
-
+.input {
+  width: 385px;
+  height: 45px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 14px;
+}
 .card {
   width: 384px;
   height: 45px;

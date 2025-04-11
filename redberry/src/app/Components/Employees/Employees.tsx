@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styles from "./Employees.module.scss";
 import { useTaskContext } from "../../TaskContext"; // Adjust path
-
+import Image from "next/image";
 type Employee = {
   id: number;
   name: string;
@@ -71,9 +71,11 @@ const EmployeesDropdown = ({
             <p>თანამშრომელი</p>
           )}
         </div>
-        <img
+        <Image
           className={`${styles.img} ${isOpen ? styles.active : ""}`}
           src="/down.svg"
+          width={14}
+          height={14}
           alt="Toggle"
         />
       </div>

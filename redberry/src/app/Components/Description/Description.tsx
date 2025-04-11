@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Description = ({ text, name }: Props) => {
-  const [field, meta] = useField(name);
+  const [field] = useField(name);
   const [isFocused, setIsFocused] = useState(false);
 
   const isValid = field.value.length >= 2 && field.value.length <= 255;

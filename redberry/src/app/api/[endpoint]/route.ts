@@ -30,7 +30,7 @@ export async function GET(
       `https://momentum.redberryinternship.ge/api/${endpoint}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
           "Content-Type": "application/json",
         },
       }
@@ -82,7 +82,7 @@ export async function POST(
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer 9e8e518a-1003-41e0-acac-9d948b639c5d`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),

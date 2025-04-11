@@ -5,7 +5,7 @@ import { Formik, Form, Field } from "formik";
 import EmployeesDropdown from "../../Components/Employees/Employees";
 import Priority from "../../Components/Priority/Priority";
 import Statusi from "../../Components/Statusi/Statusi";
-import localStyles from "./page.module.scss"; 
+import localStyles from "./page.module.scss";
 import globalStyles from "../../page.module.css";
 import { useTaskContext } from "../../TaskContext";
 import Header from "../../Components/Header/Header";
@@ -133,7 +133,7 @@ export default function AddTaskPage() {
                         name="name"
                         type="text"
                         placeholder="Task Name"
-                        className={localStyles.nameField} // Apply nameField style
+                        className={localStyles.nameField}
                       />
                       <div style={{ color: getMessageColor(values.name, 3) }}>
                         <p>მინიმუმ 3 სიმბოლო</p>
@@ -147,7 +147,7 @@ export default function AddTaskPage() {
                         name="description"
                         as="textarea"
                         placeholder="Description"
-                        className={localStyles.descriptionField} // Apply descriptionField style
+                        className={localStyles.descriptionField}
                       />
                       <div
                         style={{

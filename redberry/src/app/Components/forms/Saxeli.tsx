@@ -22,7 +22,7 @@ const Saxeli = ({ label, name, type = "text" }: SaxeliProps) => {
         }`}
         type={type}
         {...field}
-        placeholder="დაწერეთ აქ..."
+        placeholder="დაწერეთ..."
       />
       {showError ? (
         <p className={styles.errorMessage}>{meta.error}</p>

@@ -20,10 +20,6 @@ const Saxeli = ({ label, value, onChange }: SaxeliProps) => {
         minLength={2}
         maxLength={255}
       />
-      <p className={styles.p}>
-        მინიმუმ 2 სიმბოლო <br />
-        მაქსიმუმ 255 სიმბოლო
-      </p>
     </div>
   );
 };

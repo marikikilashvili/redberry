@@ -28,8 +28,11 @@
   color: rgba(33, 37, 41, 1);
 }
 
-.rotated {
-  rotate: 180deg;
+.img {
+  transition: transform 0.3s ease;
+  &.active {
+    transform: rotate(180deg);
+  }
 }
 .newDiv {
   width: 550px;

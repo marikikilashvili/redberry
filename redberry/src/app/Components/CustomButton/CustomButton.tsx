@@ -7,7 +7,7 @@ type Props = {
   onClick?: () => void; // Add onClick
 };
 
-function CustomButton({ text, className, onClick }: Props) {
+function CustomButton({ text, onClick }: Props) {
   return (
     <button className={styles.button} onClick={onClick}>
       {text}

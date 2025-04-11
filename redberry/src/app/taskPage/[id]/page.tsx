@@ -1,18 +1,20 @@
+// src/app/taskPage/[id]/page.tsx
 "use client";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useTaskContext } from "../../TaskContext";
 import styles from "./page.module.scss";
 import Image from "next/image";
-import globalStyles from "../../page.module.css"; // Add this import
+import globalStyles from "../../page.module.css";
 import SixButtons from "@/app/Components/SixButtons/SixButtons";
 import Statusi from "@/app/Components/Statusi/Statusi";
 import ColouredButton from "@/app/Components/ColouredButton/ColouredButton";
 import Tanamshromeli from "@/app/Components/Tanamshromeli/Tanamshromeli";
 import CustomButton from "@/app/Components/CustomButton/CustomButton";
 import Comment from "@/app/Components/Comment/Comment";
-import Header from "@/app/Components/Header/Header"; // Add this import
-import AddForm from "@/app/Components/AddForm/AddForm"; // Add this import
+import Header from "@/app/Components/Header/Header";
+import AddForm from "@/app/Components/AddForm/AddForm";
+
 interface Task {
   id: number;
   name: string;
@@ -31,6 +33,16 @@ interface CommentData {
   author_nickname: string;
   author_avatar?: string | null;
   parent_id?: number | null;
+}
+
+// Define a type for the raw comment data from the API
+interface RawComment {
+  id: number;
+  text: string;
+  author_nickname: string;
+  author_avatar?: string | null;
+  parent_id?: number | null;
+  sub_comments?: RawComment[];
 }
 
 export default function TaskPage() {
@@ -78,7 +90,7 @@ export default function TaskPage() {
       if (!commentResponse.ok) throw new Error("Failed to fetch comments");
       const commentData = await commentResponse.json();
 
-      const flattenComments = (comments: any[]): CommentData[] => {
+      const flattenComments = (comments: RawComment[]): CommentData[] => {
         let flat: CommentData[] = [];
         comments.forEach((c) => {
           const avatarUrl = c.author_avatar
@@ -203,11 +215,6 @@ export default function TaskPage() {
     } catch (error) {
       console.error("Error adding reply:", error);
     }
-  };
-
-  const handleCancelReply = () => {
-    setReplyingTo(null);
-    setReplyText("");
   };
 
   if (!task) {
